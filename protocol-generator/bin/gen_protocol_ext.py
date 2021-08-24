@@ -109,12 +109,31 @@ def build_encode_into_impls(enum_pairs):
 
 
 def build_encode_into_fn_def():
-    return f"""pub fn encode_into<T: EncodeInto>(msg: T) -> Bytes {{\n""" \
+    return f"""pub fn encode_into<T: EncodeInto>(msg: &T) -> Bytes {{\n""" \
         f"""{spaces(4)}return msg.encode_into()\n""" \
         f"""}}"""
 
 
-def build_decode_from_fn_def(enum_pairs):
+def build_encode_fn_def(enum_pairs):
+    match_arm_decls = []
+    for (enum_name, enum_value) in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        match_arm_decls.append(
+            f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => {{\n"""
+            f"""{spaces(12)}encode_into(msg)\n"""
+            f"""{spaces(8)}}}"""
+        )
+    match_arms_decls_output = "\n".join(match_arm_decls)
+    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    encode_fn_def_output = f"""pub fn encode(boxed_msg: &BoxedMsg) -> Bytes{{\n""" \
+        f"""{match_expr_decl_output}\n""" \
+        f"""}}"""
+
+    return encode_fn_def_output
+
+
+def build_decode_fn_def(enum_pairs):
     vars_decl_output = f"""{spaces(4)}let msg_type = bytes[0] as i8;\n""" \
         f"""{spaces(4)}let msg_bytes = bytes.slice(1..);"""
 
@@ -145,7 +164,7 @@ def build_decode_from_fn_def(enum_pairs):
     )
     cases_output = "".join(case_decls)
 
-    decode_from_fn_def_output = f"""pub fn decode_from(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {{\n""" \
+    decode_from_fn_def_output = f"""pub fn decode(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {{\n""" \
         f"""{vars_decl_output}\n""" \
         f"""{cases_output}\n""" \
         f"""}}"""
@@ -161,7 +180,8 @@ def output(module_name, enum_pairs):
         f"""{build_encode_into_trait_def()}\n\n""" \
         f"""{build_encode_into_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_into_fn_def()}\n\n""" \
-        f"""{build_decode_from_fn_def(enum_pairs)}"""
+        f"""{build_encode_fn_def(enum_pairs)}\n\n""" \
+        f"""{build_decode_fn_def(enum_pairs)}"""
     output_file_name = f"""../src/protocol/{module_name}_ext.rs"""
     with open(output_file_name, "w") as output_file:
         output_file.write(output)

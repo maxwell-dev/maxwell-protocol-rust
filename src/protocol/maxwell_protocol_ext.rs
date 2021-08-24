@@ -448,11 +448,142 @@ impl EncodeInto for ResolveIpRep {
     }
 }
 
-pub fn encode_into<T: EncodeInto>(msg: T) -> Bytes {
+pub fn encode_into<T: EncodeInto>(msg: &T) -> Bytes {
     return msg.encode_into()
 }
 
-pub fn decode_from(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {
+pub fn encode(boxed_msg: &BoxedMsg) -> Bytes{
+    match boxed_msg {
+        BoxedMsg::PingReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PingRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PullReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PullRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PushReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PushRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DoReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DoRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::Do2Req(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::Do2Rep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::AuthReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::AuthRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::OkRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ErrorRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::Ok2Rep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::Error2Rep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::RegisterFrontendReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::RegisterFrontendRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::AddRouteReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::AddRouteRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DeleteRouteReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DeleteRouteRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::AddRouteMsg(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DeleteRouteMsg(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PushRoutesReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PushRoutesRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PullRoutesReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::PullRoutesRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::RegisterBackendReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::RegisterBackendRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DeleteTopicsReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::DeleteTopicsRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveFrontendReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveFrontendRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveBackendReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveBackendRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::WatchReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::WatchRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::UnwatchReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::UnwatchRep(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveIpReq(msg) => {
+            encode_into(msg)
+        }
+        BoxedMsg::ResolveIpRep(msg) => {
+            encode_into(msg)
+        }
+    }
+}
+
+pub fn decode(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {
     let msg_type = bytes[0] as i8;
     let msg_bytes = bytes.slice(1..);
     if msg_type == 1 {
