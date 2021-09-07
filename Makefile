@@ -3,23 +3,11 @@
 CARGO=cargo
 CARGO_NIGHTLY=rustup run nightly cargo
 
-run: gen compile
-	RUST_BACKTRACE=1 ${CARGO} run -- --nocapture
-
-run-nightly: gen compile-nightly
-	RUST_BACKTRACE=1 ${CARGO_NIGHTLY} run -- --nocapture
-
-compile:
+compile: gen
 	${CARGO} build --color=always --all --all-targets
 
-compile-nightly:
+compile-nightly: gen
 	${CARGO_NIGHTLY} build --color=always --all --all-targets
-
-release: gen
-	${CARGO} build --release --color=always --all --all-targets && bin/release.sh
-
-release-nightly: gen
-	${CARGO_NIGHTLY} build --release --color=always --all --all-targets && bin/release.sh
 
 gen:
 	protocol-generator/bin/gen_protocol_code.sh

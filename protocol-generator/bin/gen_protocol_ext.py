@@ -38,12 +38,12 @@ def spaces(n):
 
 
 def build_use_decls(module_name):
-    return f"""use std::fmt::{{Debug, Formatter, Result as FmtResult}};\n""" \
-        f"""use bytes::{{Bytes, BytesMut, BufMut}};\n""" \
-        f"""use prost::Message;\n""" \
+    return f"""use super::{module_name}::*;\n""" \
+        f"""use actix::Message as ActixMessage;\n""" \
+        f"""use bytes::{{BufMut, Bytes, BytesMut}};\n""" \
         f"""pub use prost::DecodeError;\n""" \
-        f"""use super::{module_name}::*;"""
-
+        f"""use prost::Message;\n""" \
+        f"""use std::fmt::{{Debug, Formatter, Result as FmtResult}};"""
 
 def build_boxed_msg_enum_def(enum_pairs):
     boxed_msg_variant_defs = []
@@ -76,6 +76,10 @@ def build_boxed_msg_debug_impl(enum_pairs):
     boxed_msg_debug_impl_output = f"""impl Debug for BoxedMsg {{\n{fmt_output}\n}}"""
     return boxed_msg_debug_impl_output
 
+def build_boxed_msg_actix_message_impl():
+    return f"""impl ActixMessage for BoxedMsg {{\n""" \
+    f"""{spaces(4)}type Result = BoxedMsg;\n""" \
+    f"""}}"""
 
 def build_encode_into_trait_def():
     return f"""pub trait EncodeInto: Message + Sized {{\n""" \
@@ -177,6 +181,7 @@ def output(module_name, enum_pairs):
         f"""{build_use_decls(module_name)}\n\n""" \
         f"""{build_boxed_msg_enum_def(enum_pairs)}\n\n""" \
         f"""{build_boxed_msg_debug_impl(enum_pairs)}\n\n""" \
+        f"""{build_boxed_msg_actix_message_impl()}\n\n""" \
         f"""{build_encode_into_trait_def()}\n\n""" \
         f"""{build_encode_into_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_into_fn_def()}\n\n""" \

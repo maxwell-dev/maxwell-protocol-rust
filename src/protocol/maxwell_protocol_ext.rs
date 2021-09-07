@@ -1,8 +1,9 @@
-use std::fmt::{Debug, Formatter, Result as FmtResult};
-use bytes::{Bytes, BytesMut, BufMut};
-use prost::Message;
-pub use prost::DecodeError;
 use super::maxwell_protocol::*;
+use actix::Message as ActixMessage;
+use bytes::{BufMut, Bytes, BytesMut};
+pub use prost::DecodeError;
+use prost::Message;
+use std::fmt::{Debug, Formatter, Result as FmtResult};
 
 pub enum BoxedMsg {
     PingReq(PingReq),
@@ -180,6 +181,10 @@ impl Debug for BoxedMsg {
             }
         }
     }
+}
+
+impl ActixMessage for BoxedMsg {
+    type Result = BoxedMsg;
 }
 
 pub trait EncodeInto: Message + Sized {
