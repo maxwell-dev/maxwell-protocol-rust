@@ -124,13 +124,11 @@ def build_encode_fn_def(enum_pairs):
         if enum_name[0:7] == "UNKNOWN":
             continue
         match_arm_decls.append(
-            f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => {{\n"""
-            f"""{spaces(12)}encode_into(msg)\n"""
-            f"""{spaces(8)}}}"""
+            f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => encode_into(msg),"""
         )
     match_arms_decls_output = "\n".join(match_arm_decls)
     match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
-    encode_fn_def_output = f"""pub fn encode(boxed_msg: &BoxedMsg) -> Bytes{{\n""" \
+    encode_fn_def_output = f"""pub fn encode(boxed_msg: &BoxedMsg) -> Bytes {{\n""" \
         f"""{match_expr_decl_output}\n""" \
         f"""}}"""
 
@@ -157,7 +155,7 @@ def build_decode_fn_def(enum_pairs):
             f"""{spaces(8)}let res: Result<{capitalize(enum_name)}, DecodeError> = Message::decode(msg_bytes);\n"""
             f"""{spaces(8)}match res {{\n"""
             f"""{spaces(12)}Ok(msg) => Ok(BoxedMsg::{capitalize(enum_name)}(msg)),\n"""
-            f"""{spaces(12)}Err(err) => Err(err)\n"""
+            f"""{spaces(12)}Err(err) => Err(err),\n"""
             f"""{spaces(8)}}}\n"""
             f"""{spaces(4)}}}"""
         )
@@ -175,6 +173,47 @@ def build_decode_fn_def(enum_pairs):
 
     return decode_from_fn_def_output
 
+def build_set_round_ref_fn_def(enum_pairs):
+    match_arm_decls = []
+    for (enum_name, enum_value) in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        if enum_name in ["DO_REQ", "DO_REP", "DO2_REQ", "DO2_REP", "OK2_REP", "ERROR2_REP"]:
+            match_arm_decls.append(
+                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref = round_ref,""")
+        else:
+            match_arm_decls.append(
+                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.r#ref = round_ref,""")
+
+    match_arms_decls_output = "\n".join(match_arm_decls)
+    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    set_round_ref_fn_def_output = f"""pub fn set_round_ref(boxed_msg: &mut BoxedMsg, round_ref: u32) -> &BoxedMsg {{\n""" \
+        f"""{match_expr_decl_output}\n""" \
+        f"""{spaces(4)}boxed_msg\n""" \
+        f"""}}"""
+
+    return set_round_ref_fn_def_output
+
+
+def build_get_round_ref_fn_def(enum_pairs):
+    match_arm_decls = []
+    for (enum_name, enum_value) in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        if enum_name in ["DO_REQ", "DO_REP", "DO2_REQ", "DO2_REP", "OK2_REP", "ERROR2_REP"]:
+            match_arm_decls.append(
+                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref,""")
+        else:
+            match_arm_decls.append(
+                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.r#ref,""")
+
+    match_arms_decls_output = "\n".join(match_arm_decls)
+    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    get_round_ref_fn_def_output = f"""pub fn get_round_ref(boxed_msg: &BoxedMsg) -> u32 {{\n""" \
+        f"""{match_expr_decl_output}\n""" \
+        f"""}}"""
+
+    return get_round_ref_fn_def_output
 
 def output(module_name, enum_pairs):
     output = \
@@ -186,7 +225,9 @@ def output(module_name, enum_pairs):
         f"""{build_encode_into_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_into_fn_def()}\n\n""" \
         f"""{build_encode_fn_def(enum_pairs)}\n\n""" \
-        f"""{build_decode_fn_def(enum_pairs)}"""
+        f"""{build_decode_fn_def(enum_pairs)}\n\n""" \
+        f"""{build_set_round_ref_fn_def(enum_pairs)}\n\n""" \
+        f"""{build_get_round_ref_fn_def(enum_pairs)}"""
     output_file_name = f"""../src/protocol/{module_name}_ext.rs"""
     with open(output_file_name, "w") as output_file:
         output_file.write(output)

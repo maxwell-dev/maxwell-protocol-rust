@@ -7,8 +7,5 @@ fn main() {
 fn build_by_prost() {
     let mut prost_build = prost_build::Config::new();
     prost_build.out_dir("../src/protocol");
-    prost_build.compile_protos(
-        &["proto/maxwell_protocol.normalized.proto"],
-        &["proto/"]
-    ).unwrap();
+    prost_build.compile_protos(&["proto/maxwell_protocol.normalized.proto"], &["proto/"]).unwrap();
 }
