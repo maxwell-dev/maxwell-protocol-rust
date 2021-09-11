@@ -183,8 +183,10 @@ impl Debug for BoxedMsg {
     }
 }
 
+pub struct SendError;
+
 impl ActixMessage for BoxedMsg {
-    type Result = BoxedMsg;
+    type Result = Result<BoxedMsg, SendError>;
 }
 
 pub trait EncodeInto: Message + Sized {

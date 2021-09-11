@@ -77,8 +77,9 @@ def build_boxed_msg_debug_impl(enum_pairs):
     return boxed_msg_debug_impl_output
 
 def build_boxed_msg_actix_message_impl():
-    return f"""impl ActixMessage for BoxedMsg {{\n""" \
-    f"""{spaces(4)}type Result = BoxedMsg;\n""" \
+    return f"""pub struct SendError;\n\n""" \
+    f"""impl ActixMessage for BoxedMsg {{\n""" \
+    f"""{spaces(4)}type Result = Result<BoxedMsg, SendError>;\n""" \
     f"""}}"""
 
 def build_encode_into_trait_def():

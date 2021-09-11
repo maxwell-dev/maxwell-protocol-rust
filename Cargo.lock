@@ -184,7 +184,7 @@ dependencies = [
 
 [[package]]
 name = "maxwell-protocol"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "actix",
  "bytes",
