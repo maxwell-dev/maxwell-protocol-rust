@@ -1,12 +1,10 @@
-.PHONY : run compile gen test clean
-
 CARGO=cargo
 CARGO_NIGHTLY=rustup run nightly cargo
 
-compile: gen
+build: gen
 	${CARGO} build --color=always --all --all-targets
 
-compile-nightly: gen
+build-nightly: gen
 	${CARGO_NIGHTLY} build --color=always --all --all-targets
 
 gen:
