@@ -1,5 +1,5 @@
 use super::maxwell_protocol::*;
-use actix::Message as ActixMessage;
+// use actix::Message as ActixMessage;
 use bytes::{BufMut, Bytes, BytesMut};
 pub use prost::DecodeError;
 use prost::Message;
@@ -183,11 +183,11 @@ impl Debug for BoxedMsg {
     }
 }
 
-pub struct SendError;
+// pub struct SendError;
 
-impl ActixMessage for BoxedMsg {
-    type Result = Result<BoxedMsg, SendError>;
-}
+// impl ActixMessage for BoxedMsg {
+//     type Result = Result<BoxedMsg, SendError>;
+// }
 
 pub trait EncodeInto: Message + Sized {
     fn encode_type(bytes: &mut BytesMut);
@@ -456,7 +456,7 @@ impl EncodeInto for ResolveIpRep {
 }
 
 pub fn encode_into<T: EncodeInto>(msg: &T) -> Bytes {
-    return msg.encode_into()
+    return msg.encode_into();
 }
 
 pub fn encode(boxed_msg: &BoxedMsg) -> Bytes {
