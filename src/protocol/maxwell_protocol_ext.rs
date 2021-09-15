@@ -4,7 +4,7 @@ pub use prost::DecodeError;
 use prost::Message;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 
-pub enum BoxedMsg {
+pub enum ProtocolMsg {
     PingReq(PingReq),
     PingRep(PingRep),
     PullReq(PullReq),
@@ -49,136 +49,392 @@ pub enum BoxedMsg {
     ResolveIpRep(ResolveIpRep),
 }
 
-impl Debug for BoxedMsg {
+impl Debug for ProtocolMsg {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         match self {
-            BoxedMsg::PingReq(msg) => {
+            ProtocolMsg::PingReq(msg) => {
                 write!(f, "PingReq: {{{:?}}}", msg)
             }
-            BoxedMsg::PingRep(msg) => {
+            ProtocolMsg::PingRep(msg) => {
                 write!(f, "PingRep: {{{:?}}}", msg)
             }
-            BoxedMsg::PullReq(msg) => {
+            ProtocolMsg::PullReq(msg) => {
                 write!(f, "PullReq: {{{:?}}}", msg)
             }
-            BoxedMsg::PullRep(msg) => {
+            ProtocolMsg::PullRep(msg) => {
                 write!(f, "PullRep: {{{:?}}}", msg)
             }
-            BoxedMsg::PushReq(msg) => {
+            ProtocolMsg::PushReq(msg) => {
                 write!(f, "PushReq: {{{:?}}}", msg)
             }
-            BoxedMsg::PushRep(msg) => {
+            ProtocolMsg::PushRep(msg) => {
                 write!(f, "PushRep: {{{:?}}}", msg)
             }
-            BoxedMsg::DoReq(msg) => {
+            ProtocolMsg::DoReq(msg) => {
                 write!(f, "DoReq: {{{:?}}}", msg)
             }
-            BoxedMsg::DoRep(msg) => {
+            ProtocolMsg::DoRep(msg) => {
                 write!(f, "DoRep: {{{:?}}}", msg)
             }
-            BoxedMsg::Do2Req(msg) => {
+            ProtocolMsg::Do2Req(msg) => {
                 write!(f, "Do2Req: {{{:?}}}", msg)
             }
-            BoxedMsg::Do2Rep(msg) => {
+            ProtocolMsg::Do2Rep(msg) => {
                 write!(f, "Do2Rep: {{{:?}}}", msg)
             }
-            BoxedMsg::AuthReq(msg) => {
+            ProtocolMsg::AuthReq(msg) => {
                 write!(f, "AuthReq: {{{:?}}}", msg)
             }
-            BoxedMsg::AuthRep(msg) => {
+            ProtocolMsg::AuthRep(msg) => {
                 write!(f, "AuthRep: {{{:?}}}", msg)
             }
-            BoxedMsg::OkRep(msg) => {
+            ProtocolMsg::OkRep(msg) => {
                 write!(f, "OkRep: {{{:?}}}", msg)
             }
-            BoxedMsg::ErrorRep(msg) => {
+            ProtocolMsg::ErrorRep(msg) => {
                 write!(f, "ErrorRep: {{{:?}}}", msg)
             }
-            BoxedMsg::Ok2Rep(msg) => {
+            ProtocolMsg::Ok2Rep(msg) => {
                 write!(f, "Ok2Rep: {{{:?}}}", msg)
             }
-            BoxedMsg::Error2Rep(msg) => {
+            ProtocolMsg::Error2Rep(msg) => {
                 write!(f, "Error2Rep: {{{:?}}}", msg)
             }
-            BoxedMsg::RegisterFrontendReq(msg) => {
+            ProtocolMsg::RegisterFrontendReq(msg) => {
                 write!(f, "RegisterFrontendReq: {{{:?}}}", msg)
             }
-            BoxedMsg::RegisterFrontendRep(msg) => {
+            ProtocolMsg::RegisterFrontendRep(msg) => {
                 write!(f, "RegisterFrontendRep: {{{:?}}}", msg)
             }
-            BoxedMsg::AddRouteReq(msg) => {
+            ProtocolMsg::AddRouteReq(msg) => {
                 write!(f, "AddRouteReq: {{{:?}}}", msg)
             }
-            BoxedMsg::AddRouteRep(msg) => {
+            ProtocolMsg::AddRouteRep(msg) => {
                 write!(f, "AddRouteRep: {{{:?}}}", msg)
             }
-            BoxedMsg::DeleteRouteReq(msg) => {
+            ProtocolMsg::DeleteRouteReq(msg) => {
                 write!(f, "DeleteRouteReq: {{{:?}}}", msg)
             }
-            BoxedMsg::DeleteRouteRep(msg) => {
+            ProtocolMsg::DeleteRouteRep(msg) => {
                 write!(f, "DeleteRouteRep: {{{:?}}}", msg)
             }
-            BoxedMsg::AddRouteMsg(msg) => {
+            ProtocolMsg::AddRouteMsg(msg) => {
                 write!(f, "AddRouteMsg: {{{:?}}}", msg)
             }
-            BoxedMsg::DeleteRouteMsg(msg) => {
+            ProtocolMsg::DeleteRouteMsg(msg) => {
                 write!(f, "DeleteRouteMsg: {{{:?}}}", msg)
             }
-            BoxedMsg::PushRoutesReq(msg) => {
+            ProtocolMsg::PushRoutesReq(msg) => {
                 write!(f, "PushRoutesReq: {{{:?}}}", msg)
             }
-            BoxedMsg::PushRoutesRep(msg) => {
+            ProtocolMsg::PushRoutesRep(msg) => {
                 write!(f, "PushRoutesRep: {{{:?}}}", msg)
             }
-            BoxedMsg::PullRoutesReq(msg) => {
+            ProtocolMsg::PullRoutesReq(msg) => {
                 write!(f, "PullRoutesReq: {{{:?}}}", msg)
             }
-            BoxedMsg::PullRoutesRep(msg) => {
+            ProtocolMsg::PullRoutesRep(msg) => {
                 write!(f, "PullRoutesRep: {{{:?}}}", msg)
             }
-            BoxedMsg::RegisterBackendReq(msg) => {
+            ProtocolMsg::RegisterBackendReq(msg) => {
                 write!(f, "RegisterBackendReq: {{{:?}}}", msg)
             }
-            BoxedMsg::RegisterBackendRep(msg) => {
+            ProtocolMsg::RegisterBackendRep(msg) => {
                 write!(f, "RegisterBackendRep: {{{:?}}}", msg)
             }
-            BoxedMsg::DeleteTopicsReq(msg) => {
+            ProtocolMsg::DeleteTopicsReq(msg) => {
                 write!(f, "DeleteTopicsReq: {{{:?}}}", msg)
             }
-            BoxedMsg::DeleteTopicsRep(msg) => {
+            ProtocolMsg::DeleteTopicsRep(msg) => {
                 write!(f, "DeleteTopicsRep: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveFrontendReq(msg) => {
+            ProtocolMsg::ResolveFrontendReq(msg) => {
                 write!(f, "ResolveFrontendReq: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveFrontendRep(msg) => {
+            ProtocolMsg::ResolveFrontendRep(msg) => {
                 write!(f, "ResolveFrontendRep: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveBackendReq(msg) => {
+            ProtocolMsg::ResolveBackendReq(msg) => {
                 write!(f, "ResolveBackendReq: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveBackendRep(msg) => {
+            ProtocolMsg::ResolveBackendRep(msg) => {
                 write!(f, "ResolveBackendRep: {{{:?}}}", msg)
             }
-            BoxedMsg::WatchReq(msg) => {
+            ProtocolMsg::WatchReq(msg) => {
                 write!(f, "WatchReq: {{{:?}}}", msg)
             }
-            BoxedMsg::WatchRep(msg) => {
+            ProtocolMsg::WatchRep(msg) => {
                 write!(f, "WatchRep: {{{:?}}}", msg)
             }
-            BoxedMsg::UnwatchReq(msg) => {
+            ProtocolMsg::UnwatchReq(msg) => {
                 write!(f, "UnwatchReq: {{{:?}}}", msg)
             }
-            BoxedMsg::UnwatchRep(msg) => {
+            ProtocolMsg::UnwatchRep(msg) => {
                 write!(f, "UnwatchRep: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveIpReq(msg) => {
+            ProtocolMsg::ResolveIpReq(msg) => {
                 write!(f, "ResolveIpReq: {{{:?}}}", msg)
             }
-            BoxedMsg::ResolveIpRep(msg) => {
+            ProtocolMsg::ResolveIpRep(msg) => {
                 write!(f, "ResolveIpRep: {{{:?}}}", msg)
             }
         }
+    }
+}
+
+pub trait IntoProtocol {
+    fn into_protocol(self) -> ProtocolMsg;
+}
+
+impl IntoProtocol for PingReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PingReq(self)
+    }
+}
+
+impl IntoProtocol for PingRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PingRep(self)
+    }
+}
+
+impl IntoProtocol for PullReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PullReq(self)
+    }
+}
+
+impl IntoProtocol for PullRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PullRep(self)
+    }
+}
+
+impl IntoProtocol for PushReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PushReq(self)
+    }
+}
+
+impl IntoProtocol for PushRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PushRep(self)
+    }
+}
+
+impl IntoProtocol for DoReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DoReq(self)
+    }
+}
+
+impl IntoProtocol for DoRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DoRep(self)
+    }
+}
+
+impl IntoProtocol for Do2Req {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::Do2Req(self)
+    }
+}
+
+impl IntoProtocol for Do2Rep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::Do2Rep(self)
+    }
+}
+
+impl IntoProtocol for AuthReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::AuthReq(self)
+    }
+}
+
+impl IntoProtocol for AuthRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::AuthRep(self)
+    }
+}
+
+impl IntoProtocol for OkRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::OkRep(self)
+    }
+}
+
+impl IntoProtocol for ErrorRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ErrorRep(self)
+    }
+}
+
+impl IntoProtocol for Ok2Rep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::Ok2Rep(self)
+    }
+}
+
+impl IntoProtocol for Error2Rep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::Error2Rep(self)
+    }
+}
+
+impl IntoProtocol for RegisterFrontendReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::RegisterFrontendReq(self)
+    }
+}
+
+impl IntoProtocol for RegisterFrontendRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::RegisterFrontendRep(self)
+    }
+}
+
+impl IntoProtocol for AddRouteReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::AddRouteReq(self)
+    }
+}
+
+impl IntoProtocol for AddRouteRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::AddRouteRep(self)
+    }
+}
+
+impl IntoProtocol for DeleteRouteReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DeleteRouteReq(self)
+    }
+}
+
+impl IntoProtocol for DeleteRouteRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DeleteRouteRep(self)
+    }
+}
+
+impl IntoProtocol for AddRouteMsg {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::AddRouteMsg(self)
+    }
+}
+
+impl IntoProtocol for DeleteRouteMsg {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DeleteRouteMsg(self)
+    }
+}
+
+impl IntoProtocol for PushRoutesReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PushRoutesReq(self)
+    }
+}
+
+impl IntoProtocol for PushRoutesRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PushRoutesRep(self)
+    }
+}
+
+impl IntoProtocol for PullRoutesReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PullRoutesReq(self)
+    }
+}
+
+impl IntoProtocol for PullRoutesRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::PullRoutesRep(self)
+    }
+}
+
+impl IntoProtocol for RegisterBackendReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::RegisterBackendReq(self)
+    }
+}
+
+impl IntoProtocol for RegisterBackendRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::RegisterBackendRep(self)
+    }
+}
+
+impl IntoProtocol for DeleteTopicsReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DeleteTopicsReq(self)
+    }
+}
+
+impl IntoProtocol for DeleteTopicsRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::DeleteTopicsRep(self)
+    }
+}
+
+impl IntoProtocol for ResolveFrontendReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveFrontendReq(self)
+    }
+}
+
+impl IntoProtocol for ResolveFrontendRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveFrontendRep(self)
+    }
+}
+
+impl IntoProtocol for ResolveBackendReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveBackendReq(self)
+    }
+}
+
+impl IntoProtocol for ResolveBackendRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveBackendRep(self)
+    }
+}
+
+impl IntoProtocol for WatchReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::WatchReq(self)
+    }
+}
+
+impl IntoProtocol for WatchRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::WatchRep(self)
+    }
+}
+
+impl IntoProtocol for UnwatchReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::UnwatchReq(self)
+    }
+}
+
+impl IntoProtocol for UnwatchRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::UnwatchRep(self)
+    }
+}
+
+impl IntoProtocol for ResolveIpReq {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveIpReq(self)
+    }
+}
+
+impl IntoProtocol for ResolveIpRep {
+    fn into_protocol(self) -> ProtocolMsg {
+        ProtocolMsg::ResolveIpRep(self)
     }
 }
 
@@ -448,310 +704,306 @@ impl EncodeInto for ResolveIpRep {
     }
 }
 
-pub fn encode_into<T: EncodeInto>(msg: &T) -> Bytes {
-    return msg.encode_into()
-}
-
-pub fn encode(boxed_msg: &BoxedMsg) -> Bytes {
-    match boxed_msg {
-        BoxedMsg::PingReq(msg) => encode_into(msg),
-        BoxedMsg::PingRep(msg) => encode_into(msg),
-        BoxedMsg::PullReq(msg) => encode_into(msg),
-        BoxedMsg::PullRep(msg) => encode_into(msg),
-        BoxedMsg::PushReq(msg) => encode_into(msg),
-        BoxedMsg::PushRep(msg) => encode_into(msg),
-        BoxedMsg::DoReq(msg) => encode_into(msg),
-        BoxedMsg::DoRep(msg) => encode_into(msg),
-        BoxedMsg::Do2Req(msg) => encode_into(msg),
-        BoxedMsg::Do2Rep(msg) => encode_into(msg),
-        BoxedMsg::AuthReq(msg) => encode_into(msg),
-        BoxedMsg::AuthRep(msg) => encode_into(msg),
-        BoxedMsg::OkRep(msg) => encode_into(msg),
-        BoxedMsg::ErrorRep(msg) => encode_into(msg),
-        BoxedMsg::Ok2Rep(msg) => encode_into(msg),
-        BoxedMsg::Error2Rep(msg) => encode_into(msg),
-        BoxedMsg::RegisterFrontendReq(msg) => encode_into(msg),
-        BoxedMsg::RegisterFrontendRep(msg) => encode_into(msg),
-        BoxedMsg::AddRouteReq(msg) => encode_into(msg),
-        BoxedMsg::AddRouteRep(msg) => encode_into(msg),
-        BoxedMsg::DeleteRouteReq(msg) => encode_into(msg),
-        BoxedMsg::DeleteRouteRep(msg) => encode_into(msg),
-        BoxedMsg::AddRouteMsg(msg) => encode_into(msg),
-        BoxedMsg::DeleteRouteMsg(msg) => encode_into(msg),
-        BoxedMsg::PushRoutesReq(msg) => encode_into(msg),
-        BoxedMsg::PushRoutesRep(msg) => encode_into(msg),
-        BoxedMsg::PullRoutesReq(msg) => encode_into(msg),
-        BoxedMsg::PullRoutesRep(msg) => encode_into(msg),
-        BoxedMsg::RegisterBackendReq(msg) => encode_into(msg),
-        BoxedMsg::RegisterBackendRep(msg) => encode_into(msg),
-        BoxedMsg::DeleteTopicsReq(msg) => encode_into(msg),
-        BoxedMsg::DeleteTopicsRep(msg) => encode_into(msg),
-        BoxedMsg::ResolveFrontendReq(msg) => encode_into(msg),
-        BoxedMsg::ResolveFrontendRep(msg) => encode_into(msg),
-        BoxedMsg::ResolveBackendReq(msg) => encode_into(msg),
-        BoxedMsg::ResolveBackendRep(msg) => encode_into(msg),
-        BoxedMsg::WatchReq(msg) => encode_into(msg),
-        BoxedMsg::WatchRep(msg) => encode_into(msg),
-        BoxedMsg::UnwatchReq(msg) => encode_into(msg),
-        BoxedMsg::UnwatchRep(msg) => encode_into(msg),
-        BoxedMsg::ResolveIpReq(msg) => encode_into(msg),
-        BoxedMsg::ResolveIpRep(msg) => encode_into(msg),
+pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
+    match protocol_msg {
+        ProtocolMsg::PingReq(msg) => msg.encode_into(),
+        ProtocolMsg::PingRep(msg) => msg.encode_into(),
+        ProtocolMsg::PullReq(msg) => msg.encode_into(),
+        ProtocolMsg::PullRep(msg) => msg.encode_into(),
+        ProtocolMsg::PushReq(msg) => msg.encode_into(),
+        ProtocolMsg::PushRep(msg) => msg.encode_into(),
+        ProtocolMsg::DoReq(msg) => msg.encode_into(),
+        ProtocolMsg::DoRep(msg) => msg.encode_into(),
+        ProtocolMsg::Do2Req(msg) => msg.encode_into(),
+        ProtocolMsg::Do2Rep(msg) => msg.encode_into(),
+        ProtocolMsg::AuthReq(msg) => msg.encode_into(),
+        ProtocolMsg::AuthRep(msg) => msg.encode_into(),
+        ProtocolMsg::OkRep(msg) => msg.encode_into(),
+        ProtocolMsg::ErrorRep(msg) => msg.encode_into(),
+        ProtocolMsg::Ok2Rep(msg) => msg.encode_into(),
+        ProtocolMsg::Error2Rep(msg) => msg.encode_into(),
+        ProtocolMsg::RegisterFrontendReq(msg) => msg.encode_into(),
+        ProtocolMsg::RegisterFrontendRep(msg) => msg.encode_into(),
+        ProtocolMsg::AddRouteReq(msg) => msg.encode_into(),
+        ProtocolMsg::AddRouteRep(msg) => msg.encode_into(),
+        ProtocolMsg::DeleteRouteReq(msg) => msg.encode_into(),
+        ProtocolMsg::DeleteRouteRep(msg) => msg.encode_into(),
+        ProtocolMsg::AddRouteMsg(msg) => msg.encode_into(),
+        ProtocolMsg::DeleteRouteMsg(msg) => msg.encode_into(),
+        ProtocolMsg::PushRoutesReq(msg) => msg.encode_into(),
+        ProtocolMsg::PushRoutesRep(msg) => msg.encode_into(),
+        ProtocolMsg::PullRoutesReq(msg) => msg.encode_into(),
+        ProtocolMsg::PullRoutesRep(msg) => msg.encode_into(),
+        ProtocolMsg::RegisterBackendReq(msg) => msg.encode_into(),
+        ProtocolMsg::RegisterBackendRep(msg) => msg.encode_into(),
+        ProtocolMsg::DeleteTopicsReq(msg) => msg.encode_into(),
+        ProtocolMsg::DeleteTopicsRep(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveFrontendReq(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveFrontendRep(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveBackendReq(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveBackendRep(msg) => msg.encode_into(),
+        ProtocolMsg::WatchReq(msg) => msg.encode_into(),
+        ProtocolMsg::WatchRep(msg) => msg.encode_into(),
+        ProtocolMsg::UnwatchReq(msg) => msg.encode_into(),
+        ProtocolMsg::UnwatchRep(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveIpReq(msg) => msg.encode_into(),
+        ProtocolMsg::ResolveIpRep(msg) => msg.encode_into(),
     }
 }
 
-pub fn decode(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {
+pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
     let msg_type = bytes[0] as i8;
     let msg_bytes = bytes.slice(1..);
     if msg_type == 1 {
         let res: Result<PingReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PingReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PingReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 2 {
         let res: Result<PingRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PingRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PingRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 3 {
         let res: Result<PullReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PullReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PullReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 4 {
         let res: Result<PullRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PullRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PullRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 5 {
         let res: Result<PushReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PushReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PushReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 6 {
         let res: Result<PushRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PushRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PushRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 7 {
         let res: Result<DoReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DoReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DoReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 8 {
         let res: Result<DoRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DoRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DoRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 9 {
         let res: Result<Do2Req, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::Do2Req(msg)),
+            Ok(msg) => Ok(ProtocolMsg::Do2Req(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 10 {
         let res: Result<Do2Rep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::Do2Rep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::Do2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 27 {
         let res: Result<AuthReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::AuthReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::AuthReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 28 {
         let res: Result<AuthRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::AuthRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::AuthRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 29 {
         let res: Result<OkRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::OkRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::OkRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 30 {
         let res: Result<ErrorRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ErrorRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ErrorRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 31 {
         let res: Result<Ok2Rep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::Ok2Rep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::Ok2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 32 {
         let res: Result<Error2Rep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::Error2Rep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::Error2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 65 {
         let res: Result<RegisterFrontendReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::RegisterFrontendReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::RegisterFrontendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 66 {
         let res: Result<RegisterFrontendRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::RegisterFrontendRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::RegisterFrontendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 67 {
         let res: Result<AddRouteReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::AddRouteReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::AddRouteReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 68 {
         let res: Result<AddRouteRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::AddRouteRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::AddRouteRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 69 {
         let res: Result<DeleteRouteReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DeleteRouteReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DeleteRouteReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 70 {
         let res: Result<DeleteRouteRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DeleteRouteRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DeleteRouteRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 71 {
         let res: Result<AddRouteMsg, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::AddRouteMsg(msg)),
+            Ok(msg) => Ok(ProtocolMsg::AddRouteMsg(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 72 {
         let res: Result<DeleteRouteMsg, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DeleteRouteMsg(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DeleteRouteMsg(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 73 {
         let res: Result<PushRoutesReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PushRoutesReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PushRoutesReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 74 {
         let res: Result<PushRoutesRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PushRoutesRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PushRoutesRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 75 {
         let res: Result<PullRoutesReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PullRoutesReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PullRoutesReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 76 {
         let res: Result<PullRoutesRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::PullRoutesRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::PullRoutesRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 81 {
         let res: Result<RegisterBackendReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::RegisterBackendReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::RegisterBackendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 82 {
         let res: Result<RegisterBackendRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::RegisterBackendRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::RegisterBackendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 83 {
         let res: Result<DeleteTopicsReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DeleteTopicsReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DeleteTopicsReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 84 {
         let res: Result<DeleteTopicsRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::DeleteTopicsRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::DeleteTopicsRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 97 {
         let res: Result<ResolveFrontendReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveFrontendReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveFrontendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 98 {
         let res: Result<ResolveFrontendRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveFrontendRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveFrontendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 99 {
         let res: Result<ResolveBackendReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveBackendReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveBackendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 100 {
         let res: Result<ResolveBackendRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveBackendRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveBackendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 105 {
         let res: Result<WatchReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::WatchReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::WatchReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 106 {
         let res: Result<WatchRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::WatchRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::WatchRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 107 {
         let res: Result<UnwatchReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::UnwatchReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::UnwatchReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 108 {
         let res: Result<UnwatchRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::UnwatchRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::UnwatchRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 121 {
         let res: Result<ResolveIpReq, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveIpReq(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveIpReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 122 {
         let res: Result<ResolveIpRep, DecodeError> = Message::decode(msg_bytes);
         match res {
-            Ok(msg) => Ok(BoxedMsg::ResolveIpRep(msg)),
+            Ok(msg) => Ok(ProtocolMsg::ResolveIpRep(msg)),
             Err(err) => Err(err),
         }
     } else {
@@ -759,97 +1011,97 @@ pub fn decode(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {
     }
 }
 
-pub fn set_round_ref(boxed_msg: &mut BoxedMsg, round_ref: u32) -> &BoxedMsg {
-    match boxed_msg {
-        BoxedMsg::PingReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PingRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PullReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PullRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PushReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PushRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DoReq(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::DoRep(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::Do2Req(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::Do2Rep(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::AuthReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::AuthRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::OkRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ErrorRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::Ok2Rep(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::Error2Rep(msg) => msg.traces[0].r#ref = round_ref,
-        BoxedMsg::RegisterFrontendReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::RegisterFrontendRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::AddRouteReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::AddRouteRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DeleteRouteReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DeleteRouteRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::AddRouteMsg(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DeleteRouteMsg(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PushRoutesReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PushRoutesRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PullRoutesReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::PullRoutesRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::RegisterBackendReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::RegisterBackendRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DeleteTopicsReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::DeleteTopicsRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveFrontendReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveFrontendRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveBackendReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveBackendRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::WatchReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::WatchRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::UnwatchReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::UnwatchRep(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveIpReq(msg) => msg.r#ref = round_ref,
-        BoxedMsg::ResolveIpRep(msg) => msg.r#ref = round_ref,
+pub fn set_round_ref(protocol_msg: &mut ProtocolMsg, round_ref: u32) -> &ProtocolMsg {
+    match protocol_msg {
+        ProtocolMsg::PingReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PingRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PullReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PullRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PushReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PushRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DoReq(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::DoRep(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::Do2Req(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::Do2Rep(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::AuthReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::AuthRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::OkRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ErrorRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::Ok2Rep(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::Error2Rep(msg) => msg.traces[0].r#ref = round_ref,
+        ProtocolMsg::RegisterFrontendReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::RegisterFrontendRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::AddRouteReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::AddRouteRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DeleteRouteReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DeleteRouteRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::AddRouteMsg(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DeleteRouteMsg(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PushRoutesReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PushRoutesRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PullRoutesReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::PullRoutesRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::RegisterBackendReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::RegisterBackendRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DeleteTopicsReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::DeleteTopicsRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveFrontendReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveFrontendRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveBackendReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveBackendRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::WatchReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::WatchRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::UnwatchReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::UnwatchRep(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveIpReq(msg) => msg.r#ref = round_ref,
+        ProtocolMsg::ResolveIpRep(msg) => msg.r#ref = round_ref,
     }
-    boxed_msg
+    protocol_msg
 }
 
-pub fn get_round_ref(boxed_msg: &BoxedMsg) -> u32 {
-    match boxed_msg {
-        BoxedMsg::PingReq(msg) => msg.r#ref,
-        BoxedMsg::PingRep(msg) => msg.r#ref,
-        BoxedMsg::PullReq(msg) => msg.r#ref,
-        BoxedMsg::PullRep(msg) => msg.r#ref,
-        BoxedMsg::PushReq(msg) => msg.r#ref,
-        BoxedMsg::PushRep(msg) => msg.r#ref,
-        BoxedMsg::DoReq(msg) => msg.traces[0].r#ref,
-        BoxedMsg::DoRep(msg) => msg.traces[0].r#ref,
-        BoxedMsg::Do2Req(msg) => msg.traces[0].r#ref,
-        BoxedMsg::Do2Rep(msg) => msg.traces[0].r#ref,
-        BoxedMsg::AuthReq(msg) => msg.r#ref,
-        BoxedMsg::AuthRep(msg) => msg.r#ref,
-        BoxedMsg::OkRep(msg) => msg.r#ref,
-        BoxedMsg::ErrorRep(msg) => msg.r#ref,
-        BoxedMsg::Ok2Rep(msg) => msg.traces[0].r#ref,
-        BoxedMsg::Error2Rep(msg) => msg.traces[0].r#ref,
-        BoxedMsg::RegisterFrontendReq(msg) => msg.r#ref,
-        BoxedMsg::RegisterFrontendRep(msg) => msg.r#ref,
-        BoxedMsg::AddRouteReq(msg) => msg.r#ref,
-        BoxedMsg::AddRouteRep(msg) => msg.r#ref,
-        BoxedMsg::DeleteRouteReq(msg) => msg.r#ref,
-        BoxedMsg::DeleteRouteRep(msg) => msg.r#ref,
-        BoxedMsg::AddRouteMsg(msg) => msg.r#ref,
-        BoxedMsg::DeleteRouteMsg(msg) => msg.r#ref,
-        BoxedMsg::PushRoutesReq(msg) => msg.r#ref,
-        BoxedMsg::PushRoutesRep(msg) => msg.r#ref,
-        BoxedMsg::PullRoutesReq(msg) => msg.r#ref,
-        BoxedMsg::PullRoutesRep(msg) => msg.r#ref,
-        BoxedMsg::RegisterBackendReq(msg) => msg.r#ref,
-        BoxedMsg::RegisterBackendRep(msg) => msg.r#ref,
-        BoxedMsg::DeleteTopicsReq(msg) => msg.r#ref,
-        BoxedMsg::DeleteTopicsRep(msg) => msg.r#ref,
-        BoxedMsg::ResolveFrontendReq(msg) => msg.r#ref,
-        BoxedMsg::ResolveFrontendRep(msg) => msg.r#ref,
-        BoxedMsg::ResolveBackendReq(msg) => msg.r#ref,
-        BoxedMsg::ResolveBackendRep(msg) => msg.r#ref,
-        BoxedMsg::WatchReq(msg) => msg.r#ref,
-        BoxedMsg::WatchRep(msg) => msg.r#ref,
-        BoxedMsg::UnwatchReq(msg) => msg.r#ref,
-        BoxedMsg::UnwatchRep(msg) => msg.r#ref,
-        BoxedMsg::ResolveIpReq(msg) => msg.r#ref,
-        BoxedMsg::ResolveIpRep(msg) => msg.r#ref,
+pub fn get_round_ref(protocol_msg: &ProtocolMsg) -> u32 {
+    match protocol_msg {
+        ProtocolMsg::PingReq(msg) => msg.r#ref,
+        ProtocolMsg::PingRep(msg) => msg.r#ref,
+        ProtocolMsg::PullReq(msg) => msg.r#ref,
+        ProtocolMsg::PullRep(msg) => msg.r#ref,
+        ProtocolMsg::PushReq(msg) => msg.r#ref,
+        ProtocolMsg::PushRep(msg) => msg.r#ref,
+        ProtocolMsg::DoReq(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::DoRep(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::Do2Req(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::Do2Rep(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::AuthReq(msg) => msg.r#ref,
+        ProtocolMsg::AuthRep(msg) => msg.r#ref,
+        ProtocolMsg::OkRep(msg) => msg.r#ref,
+        ProtocolMsg::ErrorRep(msg) => msg.r#ref,
+        ProtocolMsg::Ok2Rep(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::Error2Rep(msg) => msg.traces[0].r#ref,
+        ProtocolMsg::RegisterFrontendReq(msg) => msg.r#ref,
+        ProtocolMsg::RegisterFrontendRep(msg) => msg.r#ref,
+        ProtocolMsg::AddRouteReq(msg) => msg.r#ref,
+        ProtocolMsg::AddRouteRep(msg) => msg.r#ref,
+        ProtocolMsg::DeleteRouteReq(msg) => msg.r#ref,
+        ProtocolMsg::DeleteRouteRep(msg) => msg.r#ref,
+        ProtocolMsg::AddRouteMsg(msg) => msg.r#ref,
+        ProtocolMsg::DeleteRouteMsg(msg) => msg.r#ref,
+        ProtocolMsg::PushRoutesReq(msg) => msg.r#ref,
+        ProtocolMsg::PushRoutesRep(msg) => msg.r#ref,
+        ProtocolMsg::PullRoutesReq(msg) => msg.r#ref,
+        ProtocolMsg::PullRoutesRep(msg) => msg.r#ref,
+        ProtocolMsg::RegisterBackendReq(msg) => msg.r#ref,
+        ProtocolMsg::RegisterBackendRep(msg) => msg.r#ref,
+        ProtocolMsg::DeleteTopicsReq(msg) => msg.r#ref,
+        ProtocolMsg::DeleteTopicsRep(msg) => msg.r#ref,
+        ProtocolMsg::ResolveFrontendReq(msg) => msg.r#ref,
+        ProtocolMsg::ResolveFrontendRep(msg) => msg.r#ref,
+        ProtocolMsg::ResolveBackendReq(msg) => msg.r#ref,
+        ProtocolMsg::ResolveBackendRep(msg) => msg.r#ref,
+        ProtocolMsg::WatchReq(msg) => msg.r#ref,
+        ProtocolMsg::WatchRep(msg) => msg.r#ref,
+        ProtocolMsg::UnwatchReq(msg) => msg.r#ref,
+        ProtocolMsg::UnwatchRep(msg) => msg.r#ref,
+        ProtocolMsg::ResolveIpReq(msg) => msg.r#ref,
+        ProtocolMsg::ResolveIpRep(msg) => msg.r#ref,
     }
 }

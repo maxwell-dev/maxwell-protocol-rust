@@ -44,26 +44,26 @@ def build_use_decls(module_name):
         f"""use prost::Message;\n""" \
         f"""use std::fmt::{{Debug, Formatter, Result as FmtResult}};"""
 
-def build_boxed_msg_enum_def(enum_pairs):
-    boxed_msg_variant_defs = []
+def build_protocol_msg_enum_def(enum_pairs):
+    protocol_msg_variant_defs = []
     for (enum_name, enum_value) in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             continue
-        boxed_msg_variant_defs.append(
+        protocol_msg_variant_defs.append(
             f"""{spaces(4)}{capitalize(enum_name)}({capitalize(enum_name)}),"""
         )
-    boxed_msg_variant_defs_output = "\n".join(boxed_msg_variant_defs)
-    boxed_msg_enum_def_output = f"""pub enum BoxedMsg {{\n{boxed_msg_variant_defs_output}\n}}"""
-    return boxed_msg_enum_def_output
+    protocol_msg_variant_defs_output = "\n".join(protocol_msg_variant_defs)
+    protocol_msg_enum_def_output = f"""pub enum ProtocolMsg {{\n{protocol_msg_variant_defs_output}\n}}"""
+    return protocol_msg_enum_def_output
 
 
-def build_boxed_msg_debug_impl(enum_pairs):
+def build_protocol_msg_debug_impl(enum_pairs):
     match_arm_decls = []
     for (enum_name, enum_value) in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             continue
         match_arm_decls.append(
-            f"""{spaces(12)}BoxedMsg::{capitalize(enum_name)}(msg) => {{\n"""
+            f"""{spaces(12)}ProtocolMsg::{capitalize(enum_name)}(msg) => {{\n"""
             f"""{spaces(16)}write!(f, "{capitalize(enum_name)}: {{{{{{:?}}}}}}", msg)\n"""
             f"""{spaces(12)}}}"""
         )
@@ -72,8 +72,31 @@ def build_boxed_msg_debug_impl(enum_pairs):
     fmt_output = f"""{spaces(4)}fn fmt(&self, f: &mut Formatter) -> FmtResult {{\n""" \
         f"""{match_expr_decl_output}\n""" \
         f"""{spaces(4)}}}"""
-    boxed_msg_debug_impl_output = f"""impl Debug for BoxedMsg {{\n{fmt_output}\n}}"""
-    return boxed_msg_debug_impl_output
+    protocol_msg_debug_impl_output = f"""impl Debug for ProtocolMsg {{\n{fmt_output}\n}}"""
+    return protocol_msg_debug_impl_output
+
+
+def build_into_protocol_trait_def():
+    return f"""pub trait IntoProtocol {{\n""" \
+        f"""{spaces(4)}fn into_protocol(self) -> ProtocolMsg;\n""" \
+        f"""}}"""
+
+
+def build_into_protocol_impls(enum_pairs):
+    impls = []
+    for (enum_name, enum_value) in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        impls.append(
+            f"""impl IntoProtocol for {capitalize(enum_name)} {{\n"""
+            f"""{spaces(4)}fn into_protocol(self) -> ProtocolMsg {{\n"""
+            f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(self)\n"""
+            f"""{spaces(4)}}}\n"""
+            f"""}}"""
+        )
+    impls_output = "\n\n".join(impls)
+    return impls_output
+
 
 def build_encode_into_trait_def():
     return f"""pub trait EncodeInto: Message + Sized {{\n""" \
@@ -106,23 +129,17 @@ def build_encode_into_impls(enum_pairs):
     return impls_output
 
 
-def build_encode_into_fn_def():
-    return f"""pub fn encode_into<T: EncodeInto>(msg: &T) -> Bytes {{\n""" \
-        f"""{spaces(4)}return msg.encode_into()\n""" \
-        f"""}}"""
-
-
 def build_encode_fn_def(enum_pairs):
     match_arm_decls = []
     for (enum_name, enum_value) in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             continue
         match_arm_decls.append(
-            f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => encode_into(msg),"""
+            f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.encode_into(),"""
         )
     match_arms_decls_output = "\n".join(match_arm_decls)
-    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
-    encode_fn_def_output = f"""pub fn encode(boxed_msg: &BoxedMsg) -> Bytes {{\n""" \
+    match_expr_decl_output = f"""{spaces(4)}match protocol_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    encode_fn_def_output = f"""pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {{\n""" \
         f"""{match_expr_decl_output}\n""" \
         f"""}}"""
 
@@ -148,7 +165,7 @@ def build_decode_fn_def(enum_pairs):
             f"""{case_name} msg_type == {enum_value} {{\n"""
             f"""{spaces(8)}let res: Result<{capitalize(enum_name)}, DecodeError> = Message::decode(msg_bytes);\n"""
             f"""{spaces(8)}match res {{\n"""
-            f"""{spaces(12)}Ok(msg) => Ok(BoxedMsg::{capitalize(enum_name)}(msg)),\n"""
+            f"""{spaces(12)}Ok(msg) => Ok(ProtocolMsg::{capitalize(enum_name)}(msg)),\n"""
             f"""{spaces(12)}Err(err) => Err(err),\n"""
             f"""{spaces(8)}}}\n"""
             f"""{spaces(4)}}}"""
@@ -160,12 +177,12 @@ def build_decode_fn_def(enum_pairs):
     )
     cases_output = "".join(case_decls)
 
-    decode_from_fn_def_output = f"""pub fn decode(bytes: &Bytes) -> Result<BoxedMsg, DecodeError> {{\n""" \
+    decode_fn_def_output = f"""pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {{\n""" \
         f"""{vars_decl_output}\n""" \
         f"""{cases_output}\n""" \
         f"""}}"""
 
-    return decode_from_fn_def_output
+    return decode_fn_def_output
 
 def build_set_round_ref_fn_def(enum_pairs):
     match_arm_decls = []
@@ -174,16 +191,16 @@ def build_set_round_ref_fn_def(enum_pairs):
             continue
         if enum_name in ["DO_REQ", "DO_REP", "DO2_REQ", "DO2_REP", "OK2_REP", "ERROR2_REP"]:
             match_arm_decls.append(
-                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref = round_ref,""")
+                f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref = round_ref,""")
         else:
             match_arm_decls.append(
-                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.r#ref = round_ref,""")
+                f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.r#ref = round_ref,""")
 
     match_arms_decls_output = "\n".join(match_arm_decls)
-    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
-    set_round_ref_fn_def_output = f"""pub fn set_round_ref(boxed_msg: &mut BoxedMsg, round_ref: u32) -> &BoxedMsg {{\n""" \
+    match_expr_decl_output = f"""{spaces(4)}match protocol_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    set_round_ref_fn_def_output = f"""pub fn set_round_ref(protocol_msg: &mut ProtocolMsg, round_ref: u32) -> &ProtocolMsg {{\n""" \
         f"""{match_expr_decl_output}\n""" \
-        f"""{spaces(4)}boxed_msg\n""" \
+        f"""{spaces(4)}protocol_msg\n""" \
         f"""}}"""
 
     return set_round_ref_fn_def_output
@@ -196,14 +213,14 @@ def build_get_round_ref_fn_def(enum_pairs):
             continue
         if enum_name in ["DO_REQ", "DO_REP", "DO2_REQ", "DO2_REP", "OK2_REP", "ERROR2_REP"]:
             match_arm_decls.append(
-                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref,""")
+                f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.traces[0].r#ref,""")
         else:
             match_arm_decls.append(
-                f"""{spaces(8)}BoxedMsg::{capitalize(enum_name)}(msg) => msg.r#ref,""")
+                f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.r#ref,""")
 
     match_arms_decls_output = "\n".join(match_arm_decls)
-    match_expr_decl_output = f"""{spaces(4)}match boxed_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
-    get_round_ref_fn_def_output = f"""pub fn get_round_ref(boxed_msg: &BoxedMsg) -> u32 {{\n""" \
+    match_expr_decl_output = f"""{spaces(4)}match protocol_msg {{\n{match_arms_decls_output}\n{spaces(4)}}}"""
+    get_round_ref_fn_def_output = f"""pub fn get_round_ref(protocol_msg: &ProtocolMsg) -> u32 {{\n""" \
         f"""{match_expr_decl_output}\n""" \
         f"""}}"""
 
@@ -212,11 +229,12 @@ def build_get_round_ref_fn_def(enum_pairs):
 def output(module_name, enum_pairs):
     output = \
         f"""{build_use_decls(module_name)}\n\n""" \
-        f"""{build_boxed_msg_enum_def(enum_pairs)}\n\n""" \
-        f"""{build_boxed_msg_debug_impl(enum_pairs)}\n\n""" \
+        f"""{build_protocol_msg_enum_def(enum_pairs)}\n\n""" \
+        f"""{build_protocol_msg_debug_impl(enum_pairs)}\n\n""" \
+        f"""{build_into_protocol_trait_def()}\n\n""" \
+        f"""{build_into_protocol_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_into_trait_def()}\n\n""" \
         f"""{build_encode_into_impls(enum_pairs)}\n\n""" \
-        f"""{build_encode_into_fn_def()}\n\n""" \
         f"""{build_encode_fn_def(enum_pairs)}\n\n""" \
         f"""{build_decode_fn_def(enum_pairs)}\n\n""" \
         f"""{build_set_round_ref_fn_def(enum_pairs)}\n\n""" \
