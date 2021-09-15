@@ -187,252 +187,294 @@ pub trait IntoProtocol {
 }
 
 impl IntoProtocol for PingReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PingReq(self)
     }
 }
 
 impl IntoProtocol for PingRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PingRep(self)
     }
 }
 
 impl IntoProtocol for PullReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PullReq(self)
     }
 }
 
 impl IntoProtocol for PullRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PullRep(self)
     }
 }
 
 impl IntoProtocol for PushReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PushReq(self)
     }
 }
 
 impl IntoProtocol for PushRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PushRep(self)
     }
 }
 
 impl IntoProtocol for DoReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DoReq(self)
     }
 }
 
 impl IntoProtocol for DoRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DoRep(self)
     }
 }
 
 impl IntoProtocol for Do2Req {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::Do2Req(self)
     }
 }
 
 impl IntoProtocol for Do2Rep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::Do2Rep(self)
     }
 }
 
 impl IntoProtocol for AuthReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::AuthReq(self)
     }
 }
 
 impl IntoProtocol for AuthRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::AuthRep(self)
     }
 }
 
 impl IntoProtocol for OkRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::OkRep(self)
     }
 }
 
 impl IntoProtocol for ErrorRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ErrorRep(self)
     }
 }
 
 impl IntoProtocol for Ok2Rep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::Ok2Rep(self)
     }
 }
 
 impl IntoProtocol for Error2Rep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::Error2Rep(self)
     }
 }
 
 impl IntoProtocol for RegisterFrontendReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::RegisterFrontendReq(self)
     }
 }
 
 impl IntoProtocol for RegisterFrontendRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::RegisterFrontendRep(self)
     }
 }
 
 impl IntoProtocol for AddRouteReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::AddRouteReq(self)
     }
 }
 
 impl IntoProtocol for AddRouteRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::AddRouteRep(self)
     }
 }
 
 impl IntoProtocol for DeleteRouteReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DeleteRouteReq(self)
     }
 }
 
 impl IntoProtocol for DeleteRouteRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DeleteRouteRep(self)
     }
 }
 
 impl IntoProtocol for AddRouteMsg {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::AddRouteMsg(self)
     }
 }
 
 impl IntoProtocol for DeleteRouteMsg {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DeleteRouteMsg(self)
     }
 }
 
 impl IntoProtocol for PushRoutesReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PushRoutesReq(self)
     }
 }
 
 impl IntoProtocol for PushRoutesRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PushRoutesRep(self)
     }
 }
 
 impl IntoProtocol for PullRoutesReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PullRoutesReq(self)
     }
 }
 
 impl IntoProtocol for PullRoutesRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::PullRoutesRep(self)
     }
 }
 
 impl IntoProtocol for RegisterBackendReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::RegisterBackendReq(self)
     }
 }
 
 impl IntoProtocol for RegisterBackendRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::RegisterBackendRep(self)
     }
 }
 
 impl IntoProtocol for DeleteTopicsReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DeleteTopicsReq(self)
     }
 }
 
 impl IntoProtocol for DeleteTopicsRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::DeleteTopicsRep(self)
     }
 }
 
 impl IntoProtocol for ResolveFrontendReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveFrontendReq(self)
     }
 }
 
 impl IntoProtocol for ResolveFrontendRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveFrontendRep(self)
     }
 }
 
 impl IntoProtocol for ResolveBackendReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveBackendReq(self)
     }
 }
 
 impl IntoProtocol for ResolveBackendRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveBackendRep(self)
     }
 }
 
 impl IntoProtocol for WatchReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::WatchReq(self)
     }
 }
 
 impl IntoProtocol for WatchRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::WatchRep(self)
     }
 }
 
 impl IntoProtocol for UnwatchReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::UnwatchReq(self)
     }
 }
 
 impl IntoProtocol for UnwatchRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::UnwatchRep(self)
     }
 }
 
 impl IntoProtocol for ResolveIpReq {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveIpReq(self)
     }
 }
 
 impl IntoProtocol for ResolveIpRep {
+    #[inline]
     fn into_protocol(self) -> ProtocolMsg {
         ProtocolMsg::ResolveIpRep(self)
     }
@@ -453,252 +495,294 @@ pub trait EncodeInto: Message + Sized {
 }
 
 impl EncodeInto for PingReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(1);
     }
 }
 
 impl EncodeInto for PingRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(2);
     }
 }
 
 impl EncodeInto for PullReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(3);
     }
 }
 
 impl EncodeInto for PullRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(4);
     }
 }
 
 impl EncodeInto for PushReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(5);
     }
 }
 
 impl EncodeInto for PushRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(6);
     }
 }
 
 impl EncodeInto for DoReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(7);
     }
 }
 
 impl EncodeInto for DoRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(8);
     }
 }
 
 impl EncodeInto for Do2Req {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(9);
     }
 }
 
 impl EncodeInto for Do2Rep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(10);
     }
 }
 
 impl EncodeInto for AuthReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(27);
     }
 }
 
 impl EncodeInto for AuthRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(28);
     }
 }
 
 impl EncodeInto for OkRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(29);
     }
 }
 
 impl EncodeInto for ErrorRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(30);
     }
 }
 
 impl EncodeInto for Ok2Rep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(31);
     }
 }
 
 impl EncodeInto for Error2Rep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(32);
     }
 }
 
 impl EncodeInto for RegisterFrontendReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(65);
     }
 }
 
 impl EncodeInto for RegisterFrontendRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(66);
     }
 }
 
 impl EncodeInto for AddRouteReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(67);
     }
 }
 
 impl EncodeInto for AddRouteRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(68);
     }
 }
 
 impl EncodeInto for DeleteRouteReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(69);
     }
 }
 
 impl EncodeInto for DeleteRouteRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(70);
     }
 }
 
 impl EncodeInto for AddRouteMsg {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(71);
     }
 }
 
 impl EncodeInto for DeleteRouteMsg {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(72);
     }
 }
 
 impl EncodeInto for PushRoutesReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(73);
     }
 }
 
 impl EncodeInto for PushRoutesRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(74);
     }
 }
 
 impl EncodeInto for PullRoutesReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(75);
     }
 }
 
 impl EncodeInto for PullRoutesRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(76);
     }
 }
 
 impl EncodeInto for RegisterBackendReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(81);
     }
 }
 
 impl EncodeInto for RegisterBackendRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(82);
     }
 }
 
 impl EncodeInto for DeleteTopicsReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(83);
     }
 }
 
 impl EncodeInto for DeleteTopicsRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(84);
     }
 }
 
 impl EncodeInto for ResolveFrontendReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(97);
     }
 }
 
 impl EncodeInto for ResolveFrontendRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(98);
     }
 }
 
 impl EncodeInto for ResolveBackendReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(99);
     }
 }
 
 impl EncodeInto for ResolveBackendRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(100);
     }
 }
 
 impl EncodeInto for WatchReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(105);
     }
 }
 
 impl EncodeInto for WatchRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(106);
     }
 }
 
 impl EncodeInto for UnwatchReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(107);
     }
 }
 
 impl EncodeInto for UnwatchRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(108);
     }
 }
 
 impl EncodeInto for ResolveIpReq {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(121);
     }
 }
 
 impl EncodeInto for ResolveIpRep {
+    #[inline]
     fn encode_type(bytes: &mut BytesMut) {
         bytes.put_u8(122);
     }

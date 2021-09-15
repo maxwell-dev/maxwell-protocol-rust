@@ -89,6 +89,7 @@ def build_into_protocol_impls(enum_pairs):
             continue
         impls.append(
             f"""impl IntoProtocol for {capitalize(enum_name)} {{\n"""
+            f"""{spaces(4)}#[inline]\n""" \
             f"""{spaces(4)}fn into_protocol(self) -> ProtocolMsg {{\n"""
             f"""{spaces(8)}ProtocolMsg::{capitalize(enum_name)}(self)\n"""
             f"""{spaces(4)}}}\n"""
@@ -120,6 +121,7 @@ def build_encode_into_impls(enum_pairs):
             continue
         impls.append(
             f"""impl EncodeInto for {capitalize(enum_name)} {{\n"""
+            f"""{spaces(4)}#[inline]\n""" \
             f"""{spaces(4)}fn encode_type(bytes: &mut BytesMut) {{\n"""
             f"""{spaces(8)}bytes.put_u8({enum_value});\n"""
             f"""{spaces(4)}}}\n"""
