@@ -63,9 +63,7 @@ def build_protocol_msg_debug_impl(enum_pairs):
         if enum_name[0:7] == "UNKNOWN":
             continue
         match_arm_decls.append(
-            f"""{spaces(12)}ProtocolMsg::{capitalize(enum_name)}(msg) => {{\n"""
-            f"""{spaces(16)}write!(f, "{capitalize(enum_name)}: {{{{{{:?}}}}}}", msg)\n"""
-            f"""{spaces(12)}}}"""
+            f"""{spaces(12)}ProtocolMsg::{capitalize(enum_name)}(msg) => write!(f, "{{:?}}", msg),"""
         )
     match_arms_decls_output = "\n".join(match_arm_decls)
     match_expr_decl_output = f"""{spaces(8)}match self {{\n{match_arms_decls_output}\n{spaces(8)}}}"""
@@ -150,7 +148,7 @@ def build_encode_fn_def(enum_pairs):
 
 def build_decode_fn_def(enum_pairs):
     vars_decl_output = f"""{spaces(4)}let msg_type = bytes[0] as i8;\n""" \
-        f"""{spaces(4)}let msg_bytes = bytes.slice(1..);"""
+        f"""{spaces(4)}let msg_body = bytes.slice(1..);"""
 
     case_decls = []
     first = True
@@ -165,7 +163,7 @@ def build_decode_fn_def(enum_pairs):
 
         case_decls.append(
             f"""{case_name} msg_type == {enum_value} {{\n"""
-            f"""{spaces(8)}let res: Result<{capitalize(enum_name)}, DecodeError> = Message::decode(msg_bytes);\n"""
+            f"""{spaces(8)}let res: Result<{capitalize(enum_name)}, DecodeError> = Message::decode(msg_body);\n"""
             f"""{spaces(8)}match res {{\n"""
             f"""{spaces(12)}Ok(msg) => Ok(ProtocolMsg::{capitalize(enum_name)}(msg)),\n"""
             f"""{spaces(12)}Err(err) => Err(err),\n"""

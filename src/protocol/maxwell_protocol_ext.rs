@@ -52,132 +52,48 @@ pub enum ProtocolMsg {
 impl Debug for ProtocolMsg {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         match self {
-            ProtocolMsg::PingReq(msg) => {
-                write!(f, "PingReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PingRep(msg) => {
-                write!(f, "PingRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PullReq(msg) => {
-                write!(f, "PullReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PullRep(msg) => {
-                write!(f, "PullRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PushReq(msg) => {
-                write!(f, "PushReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PushRep(msg) => {
-                write!(f, "PushRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DoReq(msg) => {
-                write!(f, "DoReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DoRep(msg) => {
-                write!(f, "DoRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::Do2Req(msg) => {
-                write!(f, "Do2Req: {{{:?}}}", msg)
-            }
-            ProtocolMsg::Do2Rep(msg) => {
-                write!(f, "Do2Rep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::AuthReq(msg) => {
-                write!(f, "AuthReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::AuthRep(msg) => {
-                write!(f, "AuthRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::OkRep(msg) => {
-                write!(f, "OkRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ErrorRep(msg) => {
-                write!(f, "ErrorRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::Ok2Rep(msg) => {
-                write!(f, "Ok2Rep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::Error2Rep(msg) => {
-                write!(f, "Error2Rep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::RegisterFrontendReq(msg) => {
-                write!(f, "RegisterFrontendReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::RegisterFrontendRep(msg) => {
-                write!(f, "RegisterFrontendRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::AddRouteReq(msg) => {
-                write!(f, "AddRouteReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::AddRouteRep(msg) => {
-                write!(f, "AddRouteRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DeleteRouteReq(msg) => {
-                write!(f, "DeleteRouteReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DeleteRouteRep(msg) => {
-                write!(f, "DeleteRouteRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::AddRouteMsg(msg) => {
-                write!(f, "AddRouteMsg: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DeleteRouteMsg(msg) => {
-                write!(f, "DeleteRouteMsg: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PushRoutesReq(msg) => {
-                write!(f, "PushRoutesReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PushRoutesRep(msg) => {
-                write!(f, "PushRoutesRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PullRoutesReq(msg) => {
-                write!(f, "PullRoutesReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::PullRoutesRep(msg) => {
-                write!(f, "PullRoutesRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::RegisterBackendReq(msg) => {
-                write!(f, "RegisterBackendReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::RegisterBackendRep(msg) => {
-                write!(f, "RegisterBackendRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DeleteTopicsReq(msg) => {
-                write!(f, "DeleteTopicsReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::DeleteTopicsRep(msg) => {
-                write!(f, "DeleteTopicsRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveFrontendReq(msg) => {
-                write!(f, "ResolveFrontendReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveFrontendRep(msg) => {
-                write!(f, "ResolveFrontendRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveBackendReq(msg) => {
-                write!(f, "ResolveBackendReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveBackendRep(msg) => {
-                write!(f, "ResolveBackendRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::WatchReq(msg) => {
-                write!(f, "WatchReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::WatchRep(msg) => {
-                write!(f, "WatchRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::UnwatchReq(msg) => {
-                write!(f, "UnwatchReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::UnwatchRep(msg) => {
-                write!(f, "UnwatchRep: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveIpReq(msg) => {
-                write!(f, "ResolveIpReq: {{{:?}}}", msg)
-            }
-            ProtocolMsg::ResolveIpRep(msg) => {
-                write!(f, "ResolveIpRep: {{{:?}}}", msg)
-            }
+            ProtocolMsg::PingReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PingRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PullReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PullRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PushReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PushRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DoReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DoRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::Do2Req(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::Do2Rep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::AuthReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::AuthRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::OkRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ErrorRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::Ok2Rep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::Error2Rep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::RegisterFrontendReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::RegisterFrontendRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::AddRouteReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::AddRouteRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DeleteRouteReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DeleteRouteRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::AddRouteMsg(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DeleteRouteMsg(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PushRoutesReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PushRoutesRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PullRoutesReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::PullRoutesRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::RegisterBackendReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::RegisterBackendRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DeleteTopicsReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::DeleteTopicsRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveFrontendReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveFrontendRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveBackendReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveBackendRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::WatchReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::WatchRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::UnwatchReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::UnwatchRep(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveIpReq(msg) => write!(f, "{:?}", msg),
+            ProtocolMsg::ResolveIpRep(msg) => write!(f, "{:?}", msg),
         }
     }
 }
@@ -837,255 +753,255 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
 
 pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
     let msg_type = bytes[0] as i8;
-    let msg_bytes = bytes.slice(1..);
+    let msg_body = bytes.slice(1..);
     if msg_type == 1 {
-        let res: Result<PingReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PingReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PingReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 2 {
-        let res: Result<PingRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PingRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PingRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 3 {
-        let res: Result<PullReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PullReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PullReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 4 {
-        let res: Result<PullRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PullRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PullRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 5 {
-        let res: Result<PushReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PushReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PushReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 6 {
-        let res: Result<PushRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PushRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PushRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 7 {
-        let res: Result<DoReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DoReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DoReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 8 {
-        let res: Result<DoRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DoRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DoRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 9 {
-        let res: Result<Do2Req, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<Do2Req, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::Do2Req(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 10 {
-        let res: Result<Do2Rep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<Do2Rep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::Do2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 27 {
-        let res: Result<AuthReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<AuthReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::AuthReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 28 {
-        let res: Result<AuthRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<AuthRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::AuthRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 29 {
-        let res: Result<OkRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<OkRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::OkRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 30 {
-        let res: Result<ErrorRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ErrorRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ErrorRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 31 {
-        let res: Result<Ok2Rep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<Ok2Rep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::Ok2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 32 {
-        let res: Result<Error2Rep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<Error2Rep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::Error2Rep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 65 {
-        let res: Result<RegisterFrontendReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<RegisterFrontendReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::RegisterFrontendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 66 {
-        let res: Result<RegisterFrontendRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<RegisterFrontendRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::RegisterFrontendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 67 {
-        let res: Result<AddRouteReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<AddRouteReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::AddRouteReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 68 {
-        let res: Result<AddRouteRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<AddRouteRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::AddRouteRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 69 {
-        let res: Result<DeleteRouteReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DeleteRouteReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DeleteRouteReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 70 {
-        let res: Result<DeleteRouteRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DeleteRouteRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DeleteRouteRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 71 {
-        let res: Result<AddRouteMsg, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<AddRouteMsg, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::AddRouteMsg(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 72 {
-        let res: Result<DeleteRouteMsg, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DeleteRouteMsg, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DeleteRouteMsg(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 73 {
-        let res: Result<PushRoutesReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PushRoutesReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PushRoutesReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 74 {
-        let res: Result<PushRoutesRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PushRoutesRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PushRoutesRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 75 {
-        let res: Result<PullRoutesReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PullRoutesReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PullRoutesReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 76 {
-        let res: Result<PullRoutesRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<PullRoutesRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::PullRoutesRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 81 {
-        let res: Result<RegisterBackendReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<RegisterBackendReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::RegisterBackendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 82 {
-        let res: Result<RegisterBackendRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<RegisterBackendRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::RegisterBackendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 83 {
-        let res: Result<DeleteTopicsReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DeleteTopicsReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DeleteTopicsReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 84 {
-        let res: Result<DeleteTopicsRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<DeleteTopicsRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::DeleteTopicsRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 97 {
-        let res: Result<ResolveFrontendReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveFrontendReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveFrontendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 98 {
-        let res: Result<ResolveFrontendRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveFrontendRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveFrontendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 99 {
-        let res: Result<ResolveBackendReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveBackendReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveBackendReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 100 {
-        let res: Result<ResolveBackendRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveBackendRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveBackendRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 105 {
-        let res: Result<WatchReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<WatchReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::WatchReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 106 {
-        let res: Result<WatchRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<WatchRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::WatchRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 107 {
-        let res: Result<UnwatchReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<UnwatchReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::UnwatchReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 108 {
-        let res: Result<UnwatchRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<UnwatchRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::UnwatchRep(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 121 {
-        let res: Result<ResolveIpReq, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveIpReq, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveIpReq(msg)),
             Err(err) => Err(err),
         }
     } else if msg_type == 122 {
-        let res: Result<ResolveIpRep, DecodeError> = Message::decode(msg_bytes);
+        let res: Result<ResolveIpRep, DecodeError> = Message::decode(msg_body);
         match res {
             Ok(msg) => Ok(ProtocolMsg::ResolveIpRep(msg)),
             Err(err) => Err(err),
