@@ -16,8 +16,8 @@ echo "
 mod maxwell_protocol;
 mod maxwell_protocol_ext;
 
-pub use maxwell_protocol::*;
-pub use maxwell_protocol_ext::*;
+pub use self::maxwell_protocol::*;
+pub use self::maxwell_protocol_ext::*;
 " > ${output_dir}/mod.rs
 
 bin/normalize_type_name.py --proto_file proto/maxwell_protocol.proto
