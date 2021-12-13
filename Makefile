@@ -16,6 +16,12 @@ test:
 test-nightly:
 	RUST_BACKTRACE=1 ${CARGO_NIGHTLY} test -- --nocapture
 
+fmt:
+	${CARGO} fmt
+
+fmt-nightly:
+	${CARGO_NIGHTLY} fmt
+
 clean:
 	protocol-generator/bin/clean_protocol_code.sh
 	${CARGO} clean --target-dir=protocol-generator/target
