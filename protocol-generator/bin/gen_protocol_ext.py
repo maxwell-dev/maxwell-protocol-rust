@@ -82,6 +82,36 @@ def build_protocol_msg_debug_impl(enum_pairs):
     protocol_msg_debug_impl_output = f"""impl Debug for ProtocolMsg {{\n{fmt_output}\n}}"""
     return protocol_msg_debug_impl_output
 
+def build_protocol_msg_impl():
+    return f"""impl ProtocolMsg {{\n"""\
+        f"""{spaces(2)}#[inline]\n"""\
+        f"""{spaces(2)}pub fn is_none(&self) -> bool {{\n"""\
+        f"""{spaces(4)}match self {{\n"""\
+        f"""{spaces(6)}Self::None => true,\n"""\
+        f"""{spaces(6)}_ => false,\n"""\
+        f"""{spaces(4)}}}\n"""\
+        f"""{spaces(2)}}}\n\n"""\
+        f"""{spaces(2)}#[inline]\n"""\
+        f"""{spaces(2)}pub fn is_some(&self) -> bool {{\n"""\
+        f"""{spaces(4)}match self {{\n"""\
+        f"""{spaces(6)}Self::None => false,\n"""\
+        f"""{spaces(6)}_ => true,\n"""\
+        f"""{spaces(4)}}}\n"""\
+        f"""{spaces(2)}}}\n"""\
+        f"""}}"""
+
+def build_send_error_struct_def():
+    return f"""#[derive(Debug)]\n"""\
+        f"""pub enum SendError {{\n"""\
+        f"""{spaces(2)}Timeout,\n"""\
+        f"""{spaces(2)}Closed,\n"""\
+        f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>),\n"""\
+        f"""}}"""
+
+def build_actix_message_impl():
+    return f"""impl ActixMessage for ProtocolMsg {{\n""" \
+        f"""{spaces(2)}type Result = StdResult<ProtocolMsg, SendError>;\n""" \
+        f"""}}"""
 
 def build_into_enum_trait_def():
     return f"""pub trait IntoEnum {{\n""" \
@@ -104,19 +134,6 @@ def build_into_enum_impls(enum_pairs):
         )
     impls_output = "\n\n".join(impls)
     return impls_output
-
-def build_send_error_struct_def():
-    return f"""#[derive(Debug)]\n"""\
-        f"""pub enum SendError {{\n"""\
-        f"""{spaces(2)}Timeout,\n"""\
-        f"""{spaces(2)}Closed,\n"""\
-        f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>),\n"""\
-        f"""}}"""
-
-def build_actix_message_impl():
-    return f"""impl ActixMessage for ProtocolMsg {{\n""" \
-        f"""{spaces(2)}type Result = StdResult<ProtocolMsg, SendError>;\n""" \
-        f"""}}"""
 
 def build_encode_trait_def():
     return f"""pub trait Encode: ProstMessage + Sized {{\n""" \
@@ -261,10 +278,11 @@ def output(module_name, enum_pairs):
         f"""{build_use_decls(module_name)}\n\n""" \
         f"""{build_protocol_msg_enum_def(enum_pairs)}\n\n""" \
         f"""{build_protocol_msg_debug_impl(enum_pairs)}\n\n""" \
-        f"""{build_into_enum_trait_def()}\n\n""" \
-        f"""{build_into_enum_impls(enum_pairs)}\n\n""" \
+        f"""{build_protocol_msg_impl()}\n\n""" \
         f"""{build_send_error_struct_def()}\n\n""" \
         f"""{build_actix_message_impl()}\n\n""" \
+        f"""{build_into_enum_trait_def()}\n\n""" \
+        f"""{build_into_enum_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_trait_def()}\n\n""" \
         f"""{build_encode_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_fn_def(enum_pairs)}\n\n""" \

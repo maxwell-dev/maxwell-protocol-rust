@@ -104,6 +104,35 @@ impl Debug for ProtocolMsg {
   }
 }
 
+impl ProtocolMsg {
+  #[inline]
+  pub fn is_none(&self) -> bool {
+    match self {
+      Self::None => true,
+      _ => false,
+    }
+  }
+
+  #[inline]
+  pub fn is_some(&self) -> bool {
+    match self {
+      Self::None => false,
+      _ => true,
+    }
+  }
+}
+
+#[derive(Debug)]
+pub enum SendError {
+  Timeout,
+  Closed,
+  Any(Box<dyn std::error::Error + Send + Sync>),
+}
+
+impl ActixMessage for ProtocolMsg {
+  type Result = StdResult<ProtocolMsg, SendError>;
+}
+
 pub trait IntoEnum {
   fn into_enum(self) -> ProtocolMsg;
 }
@@ -400,17 +429,6 @@ impl IntoEnum for ResolveIpRep {
   fn into_enum(self) -> ProtocolMsg {
     ProtocolMsg::ResolveIpRep(self)
   }
-}
-
-#[derive(Debug)]
-pub enum SendError {
-  Timeout,
-  Closed,
-  Any(Box<dyn std::error::Error + Send + Sync>),
-}
-
-impl ActixMessage for ProtocolMsg {
-  type Result = StdResult<ProtocolMsg, SendError>;
 }
 
 pub trait Encode: ProstMessage + Sized {
