@@ -3,10 +3,8 @@ use actix::Message as ActixMessage;
 use bytes::{BufMut, Bytes, BytesMut};
 pub use prost::DecodeError;
 use prost::Message as ProstMessage;
-use std::{
-  fmt::{Debug, Formatter, Result as FmtResult},
-  result::Result as StdResult,
-};
+use std::fmt::{Debug, Formatter, Result as FmtResult};
+use std::result::Result as StdResult;
 
 pub enum ProtocolMsg {
   None,
@@ -131,6 +129,78 @@ pub enum SendError {
 
 impl ActixMessage for ProtocolMsg {
   type Result = StdResult<ProtocolMsg, SendError>;
+}
+
+impl ActixMessage for PingReq {
+  type Result = StdResult<PingRep, SendError>;
+}
+
+impl ActixMessage for PullReq {
+  type Result = StdResult<PullRep, SendError>;
+}
+
+impl ActixMessage for PushReq {
+  type Result = StdResult<PushRep, SendError>;
+}
+
+impl ActixMessage for DoReq {
+  type Result = StdResult<DoRep, SendError>;
+}
+
+impl ActixMessage for Do2Req {
+  type Result = StdResult<Do2Rep, SendError>;
+}
+
+impl ActixMessage for AuthReq {
+  type Result = StdResult<AuthRep, SendError>;
+}
+
+impl ActixMessage for RegisterFrontendReq {
+  type Result = StdResult<RegisterFrontendRep, SendError>;
+}
+
+impl ActixMessage for AddRouteReq {
+  type Result = StdResult<AddRouteRep, SendError>;
+}
+
+impl ActixMessage for DeleteRouteReq {
+  type Result = StdResult<DeleteRouteRep, SendError>;
+}
+
+impl ActixMessage for PushRoutesReq {
+  type Result = StdResult<PushRoutesRep, SendError>;
+}
+
+impl ActixMessage for PullRoutesReq {
+  type Result = StdResult<PullRoutesRep, SendError>;
+}
+
+impl ActixMessage for RegisterBackendReq {
+  type Result = StdResult<RegisterBackendRep, SendError>;
+}
+
+impl ActixMessage for DeleteTopicsReq {
+  type Result = StdResult<DeleteTopicsRep, SendError>;
+}
+
+impl ActixMessage for ResolveFrontendReq {
+  type Result = StdResult<ResolveFrontendRep, SendError>;
+}
+
+impl ActixMessage for ResolveBackendReq {
+  type Result = StdResult<ResolveBackendRep, SendError>;
+}
+
+impl ActixMessage for WatchReq {
+  type Result = StdResult<WatchRep, SendError>;
+}
+
+impl ActixMessage for UnwatchReq {
+  type Result = StdResult<UnwatchRep, SendError>;
+}
+
+impl ActixMessage for ResolveIpReq {
+  type Result = StdResult<ResolveIpRep, SendError>;
 }
 
 pub trait IntoEnum {

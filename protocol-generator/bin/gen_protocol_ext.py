@@ -108,10 +108,26 @@ def build_send_error_struct_def():
         f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>),\n"""\
         f"""}}"""
 
-def build_actix_message_impl():
-    return f"""impl ActixMessage for ProtocolMsg {{\n""" \
+def build_actix_message_impl(enum_pairs):
+    impls = []
+    impls.append(
+        f"""impl ActixMessage for ProtocolMsg {{\n""" \
         f"""{spaces(2)}type Result = StdResult<ProtocolMsg, SendError>;\n""" \
         f"""}}"""
+    )
+    for (enum_name, enum_value) in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        elif enum_name[-3:] == "REQ":
+            req = capitalize(enum_name)
+            rep = capitalize(enum_name[0:-3] + "REP")
+            impls.append(
+                f"""impl ActixMessage for {req} {{\n"""
+                f"""{spaces(2)}type Result = StdResult<{rep}, SendError>;\n""" \
+                f"""}}"""
+            )
+    impls_output = "\n\n".join(impls)
+    return impls_output
 
 def build_into_enum_trait_def():
     return f"""pub trait IntoEnum {{\n""" \
@@ -280,7 +296,7 @@ def output(module_name, enum_pairs):
         f"""{build_protocol_msg_debug_impl(enum_pairs)}\n\n""" \
         f"""{build_protocol_msg_impl()}\n\n""" \
         f"""{build_send_error_struct_def()}\n\n""" \
-        f"""{build_actix_message_impl()}\n\n""" \
+        f"""{build_actix_message_impl(enum_pairs)}\n\n""" \
         f"""{build_into_enum_trait_def()}\n\n""" \
         f"""{build_into_enum_impls(enum_pairs)}\n\n""" \
         f"""{build_encode_trait_def()}\n\n""" \
