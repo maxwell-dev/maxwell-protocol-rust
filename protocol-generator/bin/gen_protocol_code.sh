@@ -5,7 +5,7 @@ cd ${current_dir}
 
 # Fetch proto files
 if [[ ! -d proto ]]; then
-    git clone https://github.com/maxwell-dev/maxwell-protocol.git proto;
+    git clone -b dev https://github.com/maxwell-dev/maxwell-protocol.git proto;
 fi
 
 output_dir="../src/protocol"

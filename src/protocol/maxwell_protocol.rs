@@ -1,13 +1,26 @@
-/// core protocols
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PingReq {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PingRep {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PushReq {
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    #[prost(bytes = "vec", tag = "2")]
+    pub value: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PushRep {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullReq {
@@ -18,86 +31,74 @@ pub struct PullReq {
     pub offset: i64,
     #[prost(uint32, tag = "3")]
     pub limit: u32,
-    #[prost(uint32, tag = "4")]
-    pub puller: u32,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullRep {
     #[prost(message, repeated, tag = "1")]
     pub msgs: ::prost::alloc::vec::Vec<Msg>,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PushReq {
+pub struct ReqReq {
     #[prost(string, tag = "1")]
-    pub topic: ::prost::alloc::string::String,
-    #[prost(bytes = "vec", tag = "2")]
-    pub value: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PushRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DoReq {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
+    pub path: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
-    pub value: ::prost::alloc::string::String,
-    #[prost(bool, tag = "13")]
-    pub source_enabled: bool,
-    #[prost(message, optional, tag = "14")]
-    pub source: ::core::option::Option<Source>,
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
+    pub payload: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "12")]
+    pub header: ::core::option::Option<Header>,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DoRep {
+pub struct ReqRep {
     #[prost(string, tag = "1")]
-    pub value: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Do2Req {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(bool, tag = "13")]
-    pub source_enabled: bool,
-    #[prost(message, optional, tag = "14")]
-    pub source: ::core::option::Option<Source>,
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Do2Rep {
-    #[prost(bytes = "vec", tag = "1")]
-    pub value: ::prost::alloc::vec::Vec<u8>,
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
+    pub payload: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthReq {
     #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthRep {
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OkRep {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorRep {
@@ -106,12 +107,16 @@ pub struct ErrorRep {
     #[prost(string, tag = "2")]
     pub desc: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ok2Rep {
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error2Rep {
@@ -119,32 +124,12 @@ pub struct Error2Rep {
     pub code: i32,
     #[prost(string, tag = "2")]
     pub desc: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag = "15")]
-    pub traces: ::prost::alloc::vec::Vec<Trace>,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WatchReq {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "13")]
+    pub client_ref: u32,
+    #[prost(uint32, tag = "14")]
+    pub frontend_ref: u32,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WatchRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UnwatchReq {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UnwatchRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterFrontendReq {
@@ -152,88 +137,12 @@ pub struct RegisterFrontendReq {
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterFrontendRep {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AddRouteReq {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AddRouteRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteRouteReq {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteRouteRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AddRouteMsg {
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteRouteMsg {
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub endpoint: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PushRoutesReq {
-    #[prost(string, repeated, tag = "1")]
-    pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PushRoutesRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PullRoutesReq {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PullRoutesRep {
-    #[prost(message, repeated, tag = "1")]
-    pub route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteTopicsReq {
-    #[prost(string, repeated, tag = "1")]
-    pub topics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteTopicsRep {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterBackendReq {
@@ -241,54 +150,131 @@ pub struct RegisterBackendReq {
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterBackendRep {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveFrontendReq {
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveFrontendRep {
+pub struct RegisterServerReq {
+    /// public endpoint
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveBackendReq {
+pub struct RegisterServerRep {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddRoutesReq {
+    #[prost(string, repeated, tag = "1")]
+    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddRoutesRep {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteRoutesReq {
+    #[prost(string, repeated, tag = "1")]
+    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteRoutesRep {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRoutesReq {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRoutesRep {
+    #[prost(message, repeated, tag = "1")]
+    pub routes: ::prost::alloc::vec::Vec<Route>,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteAddedMsg {
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteDeletedMsg {
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteStatusChangedMsg {
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+    #[prost(bool, tag = "3")]
+    pub is_healthy: bool,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssignFrontendReq {
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssignFrontendRep {
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub round_ref: u32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocateTopicReq {
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveBackendRep {
+pub struct LocateTopicRep {
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveIpReq {
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveIpRep {
     #[prost(string, tag = "1")]
     pub ip: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
+    pub round_ref: u32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Msg {
-    /// uint64, not int64
     #[prost(uint64, tag = "1")]
     pub offset: u64,
     #[prost(bytes = "vec", tag = "2")]
@@ -297,79 +283,59 @@ pub struct Msg {
     pub timestamp: u64,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Source {
+pub struct Header {
     #[prost(string, tag = "1")]
     pub agent: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub endpoint: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Trace {
-    #[prost(uint32, tag = "1")]
-    pub r#ref: u32,
-    #[prost(uint32, tag = "2")]
-    pub handler_id: u32,
-    #[prost(bytes = "vec", tag = "3")]
-    pub node_id: ::prost::alloc::vec::Vec<u8>,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RouteGroup {
+pub struct Route {
     #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag = "2")]
-    pub endpoints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    pub path: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+    #[prost(bool, tag = "3")]
+    pub is_healthy: bool,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MsgType {
-    /// unused, placeholder for gpb: 0
+    /// unused, placeholder for some impls
     Unknown = 0,
-    /// core protocols: 1~32
     PingReq = 1,
     PingRep = 2,
-    PullReq = 3,
-    PullRep = 4,
-    PushReq = 5,
-    PushRep = 6,
-    DoReq = 7,
-    DoRep = 8,
-    Do2Req = 9,
-    Do2Rep = 10,
+    PushReq = 3,
+    PushRep = 4,
+    PullReq = 5,
+    PullRep = 6,
+    ReqReq = 7,
+    ReqRep = 8,
     AuthReq = 27,
     AuthRep = 28,
     OkRep = 29,
     ErrorRep = 30,
     Ok2Rep = 31,
     Error2Rep = 32,
-    /// frontend-master protocols: 65~80
     RegisterFrontendReq = 65,
     RegisterFrontendRep = 66,
-    AddRouteReq = 67,
-    AddRouteRep = 68,
-    DeleteRouteReq = 69,
-    DeleteRouteRep = 70,
-    AddRouteMsg = 71,
-    DeleteRouteMsg = 72,
-    PushRoutesReq = 73,
-    PushRoutesRep = 74,
-    PullRoutesReq = 75,
-    PullRoutesRep = 76,
-    /// backend-master protocols: 81~96
-    RegisterBackendReq = 81,
-    RegisterBackendRep = 82,
-    DeleteTopicsReq = 83,
-    DeleteTopicsRep = 84,
-    /// client-master protocols: 97-104
-    ResolveFrontendReq = 97,
-    ResolveFrontendRep = 98,
-    ResolveBackendReq = 99,
-    ResolveBackendRep = 100,
-    /// client-frontend protocols: 105~112
-    WatchReq = 105,
-    WatchRep = 106,
-    UnwatchReq = 107,
-    UnwatchRep = 108,
-    /// misc protocols: 121~127
+    RegisterBackendReq = 67,
+    RegisterBackendRep = 68,
+    RegisterServerReq = 69,
+    RegisterServerRep = 70,
+    AddRoutesReq = 91,
+    AddRoutesRep = 92,
+    /// DELETE_ROUTES_REQ := 93;
+    /// DELETE_ROUTES_REP := 94;
+    GetRoutesReq = 95,
+    GetRoutesRep = 96,
+    RouteAddedMsg = 100,
+    RouteDeletedMsg = 101,
+    RouteStatusChangedMsg = 102,
+    AssignFrontendReq = 111,
+    AssignFrontendRep = 112,
+    LocateTopicReq = 113,
+    LocateTopicRep = 114,
     ResolveIpReq = 121,
     ResolveIpRep = 122,
 }
@@ -383,14 +349,12 @@ impl MsgType {
             MsgType::Unknown => "UNKNOWN",
             MsgType::PingReq => "PING_REQ",
             MsgType::PingRep => "PING_REP",
-            MsgType::PullReq => "PULL_REQ",
-            MsgType::PullRep => "PULL_REP",
             MsgType::PushReq => "PUSH_REQ",
             MsgType::PushRep => "PUSH_REP",
-            MsgType::DoReq => "DO_REQ",
-            MsgType::DoRep => "DO_REP",
-            MsgType::Do2Req => "DO2_REQ",
-            MsgType::Do2Rep => "DO2_REP",
+            MsgType::PullReq => "PULL_REQ",
+            MsgType::PullRep => "PULL_REP",
+            MsgType::ReqReq => "REQ_REQ",
+            MsgType::ReqRep => "REQ_REP",
             MsgType::AuthReq => "AUTH_REQ",
             MsgType::AuthRep => "AUTH_REP",
             MsgType::OkRep => "OK_REP",
@@ -399,28 +363,21 @@ impl MsgType {
             MsgType::Error2Rep => "ERROR2_REP",
             MsgType::RegisterFrontendReq => "REGISTER_FRONTEND_REQ",
             MsgType::RegisterFrontendRep => "REGISTER_FRONTEND_REP",
-            MsgType::AddRouteReq => "ADD_ROUTE_REQ",
-            MsgType::AddRouteRep => "ADD_ROUTE_REP",
-            MsgType::DeleteRouteReq => "DELETE_ROUTE_REQ",
-            MsgType::DeleteRouteRep => "DELETE_ROUTE_REP",
-            MsgType::AddRouteMsg => "ADD_ROUTE_MSG",
-            MsgType::DeleteRouteMsg => "DELETE_ROUTE_MSG",
-            MsgType::PushRoutesReq => "PUSH_ROUTES_REQ",
-            MsgType::PushRoutesRep => "PUSH_ROUTES_REP",
-            MsgType::PullRoutesReq => "PULL_ROUTES_REQ",
-            MsgType::PullRoutesRep => "PULL_ROUTES_REP",
             MsgType::RegisterBackendReq => "REGISTER_BACKEND_REQ",
             MsgType::RegisterBackendRep => "REGISTER_BACKEND_REP",
-            MsgType::DeleteTopicsReq => "DELETE_TOPICS_REQ",
-            MsgType::DeleteTopicsRep => "DELETE_TOPICS_REP",
-            MsgType::ResolveFrontendReq => "RESOLVE_FRONTEND_REQ",
-            MsgType::ResolveFrontendRep => "RESOLVE_FRONTEND_REP",
-            MsgType::ResolveBackendReq => "RESOLVE_BACKEND_REQ",
-            MsgType::ResolveBackendRep => "RESOLVE_BACKEND_REP",
-            MsgType::WatchReq => "WATCH_REQ",
-            MsgType::WatchRep => "WATCH_REP",
-            MsgType::UnwatchReq => "UNWATCH_REQ",
-            MsgType::UnwatchRep => "UNWATCH_REP",
+            MsgType::RegisterServerReq => "REGISTER_SERVER_REQ",
+            MsgType::RegisterServerRep => "REGISTER_SERVER_REP",
+            MsgType::AddRoutesReq => "ADD_ROUTES_REQ",
+            MsgType::AddRoutesRep => "ADD_ROUTES_REP",
+            MsgType::GetRoutesReq => "GET_ROUTES_REQ",
+            MsgType::GetRoutesRep => "GET_ROUTES_REP",
+            MsgType::RouteAddedMsg => "ROUTE_ADDED_MSG",
+            MsgType::RouteDeletedMsg => "ROUTE_DELETED_MSG",
+            MsgType::RouteStatusChangedMsg => "ROUTE_STATUS_CHANGED_MSG",
+            MsgType::AssignFrontendReq => "ASSIGN_FRONTEND_REQ",
+            MsgType::AssignFrontendRep => "ASSIGN_FRONTEND_REP",
+            MsgType::LocateTopicReq => "LOCATE_TOPIC_REQ",
+            MsgType::LocateTopicRep => "LOCATE_TOPIC_REP",
             MsgType::ResolveIpReq => "RESOLVE_IP_REQ",
             MsgType::ResolveIpRep => "RESOLVE_IP_REP",
         }
