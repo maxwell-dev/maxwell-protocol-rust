@@ -271,51 +271,51 @@ def build_decode_fn_def(enum_pairs):
     return decode_fn_def_output
 
 
-def build_set_round_ref_fn_def(enum_pairs):
+def build_set_ref_fn_def(enum_pairs):
     match_arm_decls = []
     for enum_name, enum_value in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             match_arm_decls.append(
-                f"""{spaces(4)}ProtocolMsg::None => panic!("Failed to set round ref for ProtocolMsg::None"),"""
+                f"""{spaces(4)}ProtocolMsg::None => panic!("Failed to set ref for ProtocolMsg::None"),"""
             )
         else:
             match_arm_decls.append(
-                f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.round_ref = round_ref,"""
+                f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.r#ref = r#ref,"""
             )
 
     match_arms_decls_output = "\n".join(match_arm_decls)
     match_expr_decl_output = f"""{spaces(2)}match protocol_msg {{\n{match_arms_decls_output}\n{spaces(2)}}}"""
-    set_round_ref_fn_def_output = (
-        f"""pub fn set_round_ref(protocol_msg: &mut ProtocolMsg, round_ref: u32) -> &ProtocolMsg {{\n"""
+    set_ref_fn_def_output = (
+        f"""pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {{\n"""
         f"""{match_expr_decl_output}\n"""
         f"""{spaces(2)}protocol_msg\n"""
         f"""}}"""
     )
 
-    return set_round_ref_fn_def_output
+    return set_ref_fn_def_output
 
 
-def build_get_round_ref_fn_def(enum_pairs):
+def build_get_ref_fn_def(enum_pairs):
     match_arm_decls = []
     for enum_name, enum_value in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             match_arm_decls.append(
-                f"""{spaces(4)}ProtocolMsg::None => panic!("Failed to get round ref from ProtocolMsg::None"),"""
+                f"""{spaces(4)}ProtocolMsg::None => panic!("Failed to get ref from ProtocolMsg::None"),"""
             )
         else:
             match_arm_decls.append(
-                f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.round_ref,"""
+                f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg.r#ref,"""
             )
 
     match_arms_decls_output = "\n".join(match_arm_decls)
     match_expr_decl_output = f"""{spaces(2)}match protocol_msg {{\n{match_arms_decls_output}\n{spaces(2)}}}"""
-    get_round_ref_fn_def_output = (
-        f"""pub fn get_round_ref(protocol_msg: &ProtocolMsg) -> u32 {{\n"""
+    get_ref_fn_def_output = (
+        f"""pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {{\n"""
         f"""{match_expr_decl_output}\n"""
         f"""}}"""
     )
 
-    return get_round_ref_fn_def_output
+    return get_ref_fn_def_output
 
 
 def output(module_name, enum_pairs):
@@ -332,8 +332,8 @@ def output(module_name, enum_pairs):
         f"""{build_encode_impls(enum_pairs)}\n\n"""
         f"""{build_encode_fn_def(enum_pairs)}\n\n"""
         f"""{build_decode_fn_def(enum_pairs)}\n\n"""
-        f"""{build_set_round_ref_fn_def(enum_pairs)}\n\n"""
-        f"""{build_get_round_ref_fn_def(enum_pairs)}"""
+        f"""{build_set_ref_fn_def(enum_pairs)}\n\n"""
+        f"""{build_get_ref_fn_def(enum_pairs)}"""
     )
     output_file_name = f"""../src/protocol/{module_name}_ext.rs"""
     with open(output_file_name, "w") as output_file:
