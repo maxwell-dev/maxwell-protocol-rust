@@ -148,9 +148,12 @@ pub struct Error2Rep {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterFrontendReq {
-    /// public endpoint
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1")]
+    pub http_port: u32,
+    #[prost(uint32, tag = "2")]
+    pub https_port: u32,
+    #[prost(string, tag = "3")]
+    pub public_ip: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -163,9 +166,8 @@ pub struct RegisterFrontendRep {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterBackendReq {
-    /// public endpoint
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1")]
+    pub http_port: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -178,9 +180,8 @@ pub struct RegisterBackendRep {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterServerReq {
-    /// public endpoint
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1")]
+    pub http_port: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
