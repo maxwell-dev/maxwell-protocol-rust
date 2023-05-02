@@ -229,7 +229,7 @@ pub struct GetRoutesReq {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoutesRep {
     #[prost(message, repeated, tag = "1")]
-    pub routes: ::prost::alloc::vec::Vec<Route>,
+    pub route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -255,7 +255,7 @@ pub struct RouteDeletedMsg {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RouteStatusChangedMsg {
+pub struct RouteHealthChangedMsg {
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
@@ -329,13 +329,13 @@ pub struct Header {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Route {
+pub struct RouteGroup {
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub endpoint: ::prost::alloc::string::String,
-    #[prost(bool, tag = "3")]
-    pub is_healthy: bool,
+    #[prost(string, repeated, tag = "2")]
+    pub healthy_endpoints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "3")]
+    pub unhealthy_endpoints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -370,7 +370,7 @@ pub enum MsgType {
     GetRoutesRep = 96,
     RouteAddedMsg = 100,
     RouteDeletedMsg = 101,
-    RouteStatusChangedMsg = 102,
+    RouteHealthChangedMsg = 102,
     AssignFrontendReq = 111,
     AssignFrontendRep = 112,
     LocateTopicReq = 113,
@@ -412,7 +412,7 @@ impl MsgType {
             MsgType::GetRoutesRep => "GET_ROUTES_REP",
             MsgType::RouteAddedMsg => "ROUTE_ADDED_MSG",
             MsgType::RouteDeletedMsg => "ROUTE_DELETED_MSG",
-            MsgType::RouteStatusChangedMsg => "ROUTE_STATUS_CHANGED_MSG",
+            MsgType::RouteHealthChangedMsg => "ROUTE_HEALTH_CHANGED_MSG",
             MsgType::AssignFrontendReq => "ASSIGN_FRONTEND_REQ",
             MsgType::AssignFrontendRep => "ASSIGN_FRONTEND_REP",
             MsgType::LocateTopicReq => "LOCATE_TOPIC_REQ",
@@ -451,7 +451,7 @@ impl MsgType {
             "GET_ROUTES_REP" => Some(Self::GetRoutesRep),
             "ROUTE_ADDED_MSG" => Some(Self::RouteAddedMsg),
             "ROUTE_DELETED_MSG" => Some(Self::RouteDeletedMsg),
-            "ROUTE_STATUS_CHANGED_MSG" => Some(Self::RouteStatusChangedMsg),
+            "ROUTE_HEALTH_CHANGED_MSG" => Some(Self::RouteHealthChangedMsg),
             "ASSIGN_FRONTEND_REQ" => Some(Self::AssignFrontendReq),
             "ASSIGN_FRONTEND_REP" => Some(Self::AssignFrontendRep),
             "LOCATE_TOPIC_REQ" => Some(Self::LocateTopicReq),

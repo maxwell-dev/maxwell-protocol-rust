@@ -34,7 +34,7 @@ pub enum ProtocolMsg {
   GetRoutesRep(GetRoutesRep),
   RouteAddedMsg(RouteAddedMsg),
   RouteDeletedMsg(RouteDeletedMsg),
-  RouteStatusChangedMsg(RouteStatusChangedMsg),
+  RouteHealthChangedMsg(RouteHealthChangedMsg),
   AssignFrontendReq(AssignFrontendReq),
   AssignFrontendRep(AssignFrontendRep),
   LocateTopicReq(LocateTopicReq),
@@ -73,7 +73,7 @@ impl Debug for ProtocolMsg {
       ProtocolMsg::GetRoutesRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RouteAddedMsg(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RouteDeletedMsg(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RouteStatusChangedMsg(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::RouteHealthChangedMsg(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::AssignFrontendReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::AssignFrontendRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::LocateTopicReq(msg) => write!(f, "{:?}", msg),
@@ -351,10 +351,10 @@ impl IntoEnum for RouteDeletedMsg {
   }
 }
 
-impl IntoEnum for RouteStatusChangedMsg {
+impl IntoEnum for RouteHealthChangedMsg {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RouteStatusChangedMsg(self)
+    ProtocolMsg::RouteHealthChangedMsg(self)
   }
 }
 
@@ -601,7 +601,7 @@ impl Encode for RouteDeletedMsg {
   }
 }
 
-impl Encode for RouteStatusChangedMsg {
+impl Encode for RouteHealthChangedMsg {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(102);
@@ -679,7 +679,7 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
     ProtocolMsg::GetRoutesRep(msg) => msg.encode_msg(),
     ProtocolMsg::RouteAddedMsg(msg) => msg.encode_msg(),
     ProtocolMsg::RouteDeletedMsg(msg) => msg.encode_msg(),
-    ProtocolMsg::RouteStatusChangedMsg(msg) => msg.encode_msg(),
+    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.encode_msg(),
     ProtocolMsg::AssignFrontendReq(msg) => msg.encode_msg(),
     ProtocolMsg::AssignFrontendRep(msg) => msg.encode_msg(),
     ProtocolMsg::LocateTopicReq(msg) => msg.encode_msg(),
@@ -849,9 +849,9 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
       Err(err) => Err(err),
     }
   } else if msg_type == 102 {
-    let res: Result<RouteStatusChangedMsg, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<RouteHealthChangedMsg, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RouteStatusChangedMsg(msg)),
+      Ok(msg) => Ok(ProtocolMsg::RouteHealthChangedMsg(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 111 {
@@ -924,7 +924,7 @@ pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RouteAddedMsg(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RouteDeletedMsg(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RouteStatusChangedMsg(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.r#ref = r#ref,
     ProtocolMsg::AssignFrontendReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::AssignFrontendRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref = r#ref,
@@ -964,7 +964,7 @@ pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref,
     ProtocolMsg::RouteAddedMsg(msg) => msg.r#ref,
     ProtocolMsg::RouteDeletedMsg(msg) => msg.r#ref,
-    ProtocolMsg::RouteStatusChangedMsg(msg) => msg.r#ref,
+    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.r#ref,
     ProtocolMsg::AssignFrontendReq(msg) => msg.r#ref,
     ProtocolMsg::AssignFrontendRep(msg) => msg.r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref,
