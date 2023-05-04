@@ -116,6 +116,7 @@ def build_send_error_struct_def():
         f"""pub enum SendError {{\n"""
         f"""{spaces(2)}Timeout,\n"""
         f"""{spaces(2)}Closed,\n"""
+        f"""{spaces(2)}DuplicatedRef(u32),\n"""
         f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>),\n"""
         f"""}}"""
     )

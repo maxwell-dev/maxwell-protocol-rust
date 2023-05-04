@@ -106,6 +106,7 @@ impl ProtocolMsg {
 pub enum SendError {
   Timeout,
   Closed,
+  DuplicatedRef(u32),
   Any(Box<dyn std::error::Error + Send + Sync>),
 }
 
