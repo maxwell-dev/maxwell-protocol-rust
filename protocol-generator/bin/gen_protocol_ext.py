@@ -41,6 +41,7 @@ def build_use_decls(module_name):
         f"""use actix::Message as ActixMessage;\n"""
         f"""use bytes::{{BufMut, Bytes, BytesMut}};\n"""
         f"""pub use prost::DecodeError;\n"""
+        f"""use thiserror::Error as ThisError;\n"""
         f"""use prost::Message as ProstMessage;\n"""
         f"""use std::fmt::{{Debug, Formatter, Result as FmtResult}};\n"""
         f"""use std::result::Result as StdResult;"""
@@ -112,12 +113,16 @@ def build_protocol_msg_impl():
 
 def build_send_error_struct_def():
     return (
-        f"""#[derive(Debug)]\n"""
+        f"""#[derive(Debug, ThisError)]\n"""
         f"""pub enum HandleError<M> {{\n"""
+        f"""{spaces(2)}#[error("The mailbox was full")]\n"""
         f"""{spaces(2)}MailboxFull,\n"""
+        f"""{spaces(2)}#[error("The mailbox has closed")]\n"""
         f"""{spaces(2)}MailboxClosed,\n"""
+        f"""{spaces(2)}#[error("Message delivery timed out")]\n"""
         f"""{spaces(2)}Timeout,\n"""
-        f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>, M),\n"""
+        f"""{spaces(2)}#[error("Error occured: code: {{code}}, desc: {{desc}}")]\n"""
+        f"""{spaces(2)}Any {{ code: i32, desc: String, msg: M }},\n"""
         f"""}}"""
     )
 

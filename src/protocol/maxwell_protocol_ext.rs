@@ -2,6 +2,7 @@ use super::maxwell_protocol::*;
 use actix::Message as ActixMessage;
 use bytes::{BufMut, Bytes, BytesMut};
 pub use prost::DecodeError;
+use thiserror::Error as ThisError;
 use prost::Message as ProstMessage;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 use std::result::Result as StdResult;
@@ -102,12 +103,16 @@ impl ProtocolMsg {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, ThisError)]
 pub enum HandleError<M> {
+  #[error("The mailbox was full")]
   MailboxFull,
+  #[error("The mailbox has closed")]
   MailboxClosed,
+  #[error("Message delivery timed out")]
   Timeout,
-  Any(Box<dyn std::error::Error + Send + Sync>, M),
+  #[error("Error occured: code: {code}, desc: {desc}")]
+  Any { code: i32, desc: String, msg: M },
 }
 
 impl ActixMessage for ProtocolMsg {
