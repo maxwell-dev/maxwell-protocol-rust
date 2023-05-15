@@ -144,15 +144,23 @@ def build_actix_message_impl(enum_pairs):
     return impls_output
 
 
+def build_into_enum_trait_def():
+    return (
+        f"""pub trait IntoEnum {{\n"""
+        f"""{spaces(2)}fn into_enum(self) -> ProtocolMsg;\n"""
+        f"""}}"""
+    )
+
+
 def build_into_enum_impls(enum_pairs):
     impls = []
     for enum_name, enum_value in enum_pairs:
         if enum_name[0:7] == "UNKNOWN":
             continue
         impls.append(
-            f"""impl Into<ProtocolMsg> for {capitalize(enum_name)} {{\n"""
+            f"""impl IntoEnum for {capitalize(enum_name)} {{\n"""
             f"""{spaces(2)}#[inline]\n"""
-            f"""{spaces(2)}fn into(self) -> ProtocolMsg {{\n"""
+            f"""{spaces(2)}fn into_enum(self) -> ProtocolMsg {{\n"""
             f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(self)\n"""
             f"""{spaces(2)}}}\n"""
             f"""}}"""
@@ -319,6 +327,7 @@ def output(module_name, enum_pairs):
         f"""{build_protocol_msg_impl()}\n\n"""
         f"""{build_send_error_struct_def()}\n\n"""
         f"""{build_actix_message_impl(enum_pairs)}\n\n"""
+        f"""{build_into_enum_trait_def()}\n\n"""
         f"""{build_into_enum_impls(enum_pairs)}\n\n"""
         f"""{build_encode_trait_def()}\n\n"""
         f"""{build_encode_impls(enum_pairs)}\n\n"""
