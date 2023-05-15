@@ -113,11 +113,11 @@ def build_protocol_msg_impl():
 def build_send_error_struct_def():
     return (
         f"""#[derive(Debug)]\n"""
-        f"""pub enum SendError {{\n"""
+        f"""pub enum HandleError<M> {{\n"""
+        f"""{spaces(2)}MailboxFull,\n"""
+        f"""{spaces(2)}MailboxClosed,\n"""
         f"""{spaces(2)}Timeout,\n"""
-        f"""{spaces(2)}Closed,\n"""
-        f"""{spaces(2)}DuplicatedMsgRef(u32),\n"""
-        f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>),\n"""
+        f"""{spaces(2)}Any(Box<dyn std::error::Error + Send + Sync>, M),\n"""
         f"""}}"""
     )
 
@@ -126,7 +126,7 @@ def build_actix_message_impl(enum_pairs):
     impls = []
     impls.append(
         f"""impl ActixMessage for ProtocolMsg {{\n"""
-        f"""{spaces(2)}type Result = StdResult<ProtocolMsg, SendError>;\n"""
+        f"""{spaces(2)}type Result = StdResult<ProtocolMsg, HandleError<ProtocolMsg>>;\n"""
         f"""}}"""
     )
     for enum_name, enum_value in enum_pairs:
@@ -137,19 +137,11 @@ def build_actix_message_impl(enum_pairs):
             rep = capitalize(enum_name[0:-3] + "REP")
             impls.append(
                 f"""impl ActixMessage for {req} {{\n"""
-                f"""{spaces(2)}type Result = StdResult<{rep}, SendError>;\n"""
+                f"""{spaces(2)}type Result = StdResult<{rep}, HandleError<{req}>>;\n"""
                 f"""}}"""
             )
     impls_output = "\n\n".join(impls)
     return impls_output
-
-
-def build_into_enum_trait_def():
-    return (
-        f"""pub trait IntoEnum {{\n"""
-        f"""{spaces(2)}fn into_enum(self) -> ProtocolMsg;\n"""
-        f"""}}"""
-    )
 
 
 def build_into_enum_impls(enum_pairs):
@@ -158,9 +150,9 @@ def build_into_enum_impls(enum_pairs):
         if enum_name[0:7] == "UNKNOWN":
             continue
         impls.append(
-            f"""impl IntoEnum for {capitalize(enum_name)} {{\n"""
+            f"""impl Into<ProtocolMsg> for {capitalize(enum_name)} {{\n"""
             f"""{spaces(2)}#[inline]\n"""
-            f"""{spaces(2)}fn into_enum(self) -> ProtocolMsg {{\n"""
+            f"""{spaces(2)}fn into(self) -> ProtocolMsg {{\n"""
             f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(self)\n"""
             f"""{spaces(2)}}}\n"""
             f"""}}"""
@@ -327,7 +319,6 @@ def output(module_name, enum_pairs):
         f"""{build_protocol_msg_impl()}\n\n"""
         f"""{build_send_error_struct_def()}\n\n"""
         f"""{build_actix_message_impl(enum_pairs)}\n\n"""
-        f"""{build_into_enum_trait_def()}\n\n"""
         f"""{build_into_enum_impls(enum_pairs)}\n\n"""
         f"""{build_encode_trait_def()}\n\n"""
         f"""{build_encode_impls(enum_pairs)}\n\n"""

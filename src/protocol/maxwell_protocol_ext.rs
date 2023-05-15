@@ -103,300 +103,296 @@ impl ProtocolMsg {
 }
 
 #[derive(Debug)]
-pub enum SendError {
+pub enum HandleError<M> {
+  MailboxFull,
+  MailboxClosed,
   Timeout,
-  Closed,
-  DuplicatedMsgRef(u32),
-  Any(Box<dyn std::error::Error + Send + Sync>),
+  Any(Box<dyn std::error::Error + Send + Sync>, M),
 }
 
 impl ActixMessage for ProtocolMsg {
-  type Result = StdResult<ProtocolMsg, SendError>;
+  type Result = StdResult<ProtocolMsg, HandleError<ProtocolMsg>>;
 }
 
 impl ActixMessage for PingReq {
-  type Result = StdResult<PingRep, SendError>;
+  type Result = StdResult<PingRep, HandleError<PingReq>>;
 }
 
 impl ActixMessage for PushReq {
-  type Result = StdResult<PushRep, SendError>;
+  type Result = StdResult<PushRep, HandleError<PushReq>>;
 }
 
 impl ActixMessage for PullReq {
-  type Result = StdResult<PullRep, SendError>;
+  type Result = StdResult<PullRep, HandleError<PullReq>>;
 }
 
 impl ActixMessage for ReqReq {
-  type Result = StdResult<ReqRep, SendError>;
+  type Result = StdResult<ReqRep, HandleError<ReqReq>>;
 }
 
 impl ActixMessage for AuthReq {
-  type Result = StdResult<AuthRep, SendError>;
+  type Result = StdResult<AuthRep, HandleError<AuthReq>>;
 }
 
 impl ActixMessage for RegisterFrontendReq {
-  type Result = StdResult<RegisterFrontendRep, SendError>;
+  type Result = StdResult<RegisterFrontendRep, HandleError<RegisterFrontendReq>>;
 }
 
 impl ActixMessage for RegisterBackendReq {
-  type Result = StdResult<RegisterBackendRep, SendError>;
+  type Result = StdResult<RegisterBackendRep, HandleError<RegisterBackendReq>>;
 }
 
 impl ActixMessage for RegisterServerReq {
-  type Result = StdResult<RegisterServerRep, SendError>;
+  type Result = StdResult<RegisterServerRep, HandleError<RegisterServerReq>>;
 }
 
 impl ActixMessage for AddRoutesReq {
-  type Result = StdResult<AddRoutesRep, SendError>;
+  type Result = StdResult<AddRoutesRep, HandleError<AddRoutesReq>>;
 }
 
 impl ActixMessage for GetRoutesReq {
-  type Result = StdResult<GetRoutesRep, SendError>;
+  type Result = StdResult<GetRoutesRep, HandleError<GetRoutesReq>>;
 }
 
 impl ActixMessage for AssignFrontendReq {
-  type Result = StdResult<AssignFrontendRep, SendError>;
+  type Result = StdResult<AssignFrontendRep, HandleError<AssignFrontendReq>>;
 }
 
 impl ActixMessage for LocateTopicReq {
-  type Result = StdResult<LocateTopicRep, SendError>;
+  type Result = StdResult<LocateTopicRep, HandleError<LocateTopicReq>>;
 }
 
 impl ActixMessage for ResolveIpReq {
-  type Result = StdResult<ResolveIpRep, SendError>;
+  type Result = StdResult<ResolveIpRep, HandleError<ResolveIpReq>>;
 }
 
-pub trait IntoEnum {
-  fn into_enum(self) -> ProtocolMsg;
-}
-
-impl IntoEnum for PingReq {
+impl Into<ProtocolMsg> for PingReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PingReq(self)
   }
 }
 
-impl IntoEnum for PingRep {
+impl Into<ProtocolMsg> for PingRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PingRep(self)
   }
 }
 
-impl IntoEnum for PushReq {
+impl Into<ProtocolMsg> for PushReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PushReq(self)
   }
 }
 
-impl IntoEnum for PushRep {
+impl Into<ProtocolMsg> for PushRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PushRep(self)
   }
 }
 
-impl IntoEnum for PullReq {
+impl Into<ProtocolMsg> for PullReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PullReq(self)
   }
 }
 
-impl IntoEnum for PullRep {
+impl Into<ProtocolMsg> for PullRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::PullRep(self)
   }
 }
 
-impl IntoEnum for ReqReq {
+impl Into<ProtocolMsg> for ReqReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::ReqReq(self)
   }
 }
 
-impl IntoEnum for ReqRep {
+impl Into<ProtocolMsg> for ReqRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::ReqRep(self)
   }
 }
 
-impl IntoEnum for AuthReq {
+impl Into<ProtocolMsg> for AuthReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AuthReq(self)
   }
 }
 
-impl IntoEnum for AuthRep {
+impl Into<ProtocolMsg> for AuthRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AuthRep(self)
   }
 }
 
-impl IntoEnum for OkRep {
+impl Into<ProtocolMsg> for OkRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::OkRep(self)
   }
 }
 
-impl IntoEnum for ErrorRep {
+impl Into<ProtocolMsg> for ErrorRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::ErrorRep(self)
   }
 }
 
-impl IntoEnum for Ok2Rep {
+impl Into<ProtocolMsg> for Ok2Rep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::Ok2Rep(self)
   }
 }
 
-impl IntoEnum for Error2Rep {
+impl Into<ProtocolMsg> for Error2Rep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::Error2Rep(self)
   }
 }
 
-impl IntoEnum for RegisterFrontendReq {
+impl Into<ProtocolMsg> for RegisterFrontendReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterFrontendReq(self)
   }
 }
 
-impl IntoEnum for RegisterFrontendRep {
+impl Into<ProtocolMsg> for RegisterFrontendRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterFrontendRep(self)
   }
 }
 
-impl IntoEnum for RegisterBackendReq {
+impl Into<ProtocolMsg> for RegisterBackendReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterBackendReq(self)
   }
 }
 
-impl IntoEnum for RegisterBackendRep {
+impl Into<ProtocolMsg> for RegisterBackendRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterBackendRep(self)
   }
 }
 
-impl IntoEnum for RegisterServerReq {
+impl Into<ProtocolMsg> for RegisterServerReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterServerReq(self)
   }
 }
 
-impl IntoEnum for RegisterServerRep {
+impl Into<ProtocolMsg> for RegisterServerRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RegisterServerRep(self)
   }
 }
 
-impl IntoEnum for AddRoutesReq {
+impl Into<ProtocolMsg> for AddRoutesReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AddRoutesReq(self)
   }
 }
 
-impl IntoEnum for AddRoutesRep {
+impl Into<ProtocolMsg> for AddRoutesRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AddRoutesRep(self)
   }
 }
 
-impl IntoEnum for GetRoutesReq {
+impl Into<ProtocolMsg> for GetRoutesReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::GetRoutesReq(self)
   }
 }
 
-impl IntoEnum for GetRoutesRep {
+impl Into<ProtocolMsg> for GetRoutesRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::GetRoutesRep(self)
   }
 }
 
-impl IntoEnum for RouteAddedMsg {
+impl Into<ProtocolMsg> for RouteAddedMsg {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RouteAddedMsg(self)
   }
 }
 
-impl IntoEnum for RouteDeletedMsg {
+impl Into<ProtocolMsg> for RouteDeletedMsg {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RouteDeletedMsg(self)
   }
 }
 
-impl IntoEnum for RouteHealthChangedMsg {
+impl Into<ProtocolMsg> for RouteHealthChangedMsg {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::RouteHealthChangedMsg(self)
   }
 }
 
-impl IntoEnum for AssignFrontendReq {
+impl Into<ProtocolMsg> for AssignFrontendReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AssignFrontendReq(self)
   }
 }
 
-impl IntoEnum for AssignFrontendRep {
+impl Into<ProtocolMsg> for AssignFrontendRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::AssignFrontendRep(self)
   }
 }
 
-impl IntoEnum for LocateTopicReq {
+impl Into<ProtocolMsg> for LocateTopicReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::LocateTopicReq(self)
   }
 }
 
-impl IntoEnum for LocateTopicRep {
+impl Into<ProtocolMsg> for LocateTopicRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::LocateTopicRep(self)
   }
 }
 
-impl IntoEnum for ResolveIpReq {
+impl Into<ProtocolMsg> for ResolveIpReq {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::ResolveIpReq(self)
   }
 }
 
-impl IntoEnum for ResolveIpRep {
+impl Into<ProtocolMsg> for ResolveIpRep {
   #[inline]
-  fn into_enum(self) -> ProtocolMsg {
+  fn into(self) -> ProtocolMsg {
     ProtocolMsg::ResolveIpRep(self)
   }
 }
