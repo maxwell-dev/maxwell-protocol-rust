@@ -406,6 +406,336 @@ impl IntoEnum for ResolveIpRep {
   }
 }
 
+impl From<ProtocolMsg> for PingReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PingReq {
+    match item {
+      ProtocolMsg::PingReq(msg) => msg,
+      _ => panic!("Unable to convert to PingReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for PingRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PingRep {
+    match item {
+      ProtocolMsg::PingRep(msg) => msg,
+      _ => panic!("Unable to convert to PingRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for PushReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PushReq {
+    match item {
+      ProtocolMsg::PushReq(msg) => msg,
+      _ => panic!("Unable to convert to PushReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for PushRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PushRep {
+    match item {
+      ProtocolMsg::PushRep(msg) => msg,
+      _ => panic!("Unable to convert to PushRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for PullReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PullReq {
+    match item {
+      ProtocolMsg::PullReq(msg) => msg,
+      _ => panic!("Unable to convert to PullReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for PullRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> PullRep {
+    match item {
+      ProtocolMsg::PullRep(msg) => msg,
+      _ => panic!("Unable to convert to PullRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ReqReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ReqReq {
+    match item {
+      ProtocolMsg::ReqReq(msg) => msg,
+      _ => panic!("Unable to convert to ReqReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ReqRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ReqRep {
+    match item {
+      ProtocolMsg::ReqRep(msg) => msg,
+      _ => panic!("Unable to convert to ReqRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AuthReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AuthReq {
+    match item {
+      ProtocolMsg::AuthReq(msg) => msg,
+      _ => panic!("Unable to convert to AuthReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AuthRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AuthRep {
+    match item {
+      ProtocolMsg::AuthRep(msg) => msg,
+      _ => panic!("Unable to convert to AuthRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for OkRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> OkRep {
+    match item {
+      ProtocolMsg::OkRep(msg) => msg,
+      _ => panic!("Unable to convert to OkRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ErrorRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ErrorRep {
+    match item {
+      ProtocolMsg::ErrorRep(msg) => msg,
+      _ => panic!("Unable to convert to ErrorRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for Ok2Rep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> Ok2Rep {
+    match item {
+      ProtocolMsg::Ok2Rep(msg) => msg,
+      _ => panic!("Unable to convert to Ok2Rep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for Error2Rep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> Error2Rep {
+    match item {
+      ProtocolMsg::Error2Rep(msg) => msg,
+      _ => panic!("Unable to convert to Error2Rep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterFrontendReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterFrontendReq {
+    match item {
+      ProtocolMsg::RegisterFrontendReq(msg) => msg,
+      _ => panic!("Unable to convert to RegisterFrontendReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterFrontendRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterFrontendRep {
+    match item {
+      ProtocolMsg::RegisterFrontendRep(msg) => msg,
+      _ => panic!("Unable to convert to RegisterFrontendRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterBackendReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterBackendReq {
+    match item {
+      ProtocolMsg::RegisterBackendReq(msg) => msg,
+      _ => panic!("Unable to convert to RegisterBackendReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterBackendRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterBackendRep {
+    match item {
+      ProtocolMsg::RegisterBackendRep(msg) => msg,
+      _ => panic!("Unable to convert to RegisterBackendRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterServerReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterServerReq {
+    match item {
+      ProtocolMsg::RegisterServerReq(msg) => msg,
+      _ => panic!("Unable to convert to RegisterServerReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RegisterServerRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RegisterServerRep {
+    match item {
+      ProtocolMsg::RegisterServerRep(msg) => msg,
+      _ => panic!("Unable to convert to RegisterServerRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AddRoutesReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AddRoutesReq {
+    match item {
+      ProtocolMsg::AddRoutesReq(msg) => msg,
+      _ => panic!("Unable to convert to AddRoutesReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AddRoutesRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AddRoutesRep {
+    match item {
+      ProtocolMsg::AddRoutesRep(msg) => msg,
+      _ => panic!("Unable to convert to AddRoutesRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for GetRoutesReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> GetRoutesReq {
+    match item {
+      ProtocolMsg::GetRoutesReq(msg) => msg,
+      _ => panic!("Unable to convert to GetRoutesReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for GetRoutesRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> GetRoutesRep {
+    match item {
+      ProtocolMsg::GetRoutesRep(msg) => msg,
+      _ => panic!("Unable to convert to GetRoutesRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RouteAddedMsg {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RouteAddedMsg {
+    match item {
+      ProtocolMsg::RouteAddedMsg(msg) => msg,
+      _ => panic!("Unable to convert to RouteAddedMsg"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RouteDeletedMsg {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RouteDeletedMsg {
+    match item {
+      ProtocolMsg::RouteDeletedMsg(msg) => msg,
+      _ => panic!("Unable to convert to RouteDeletedMsg"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for RouteHealthChangedMsg {
+  #[inline]
+  fn from(item: ProtocolMsg) -> RouteHealthChangedMsg {
+    match item {
+      ProtocolMsg::RouteHealthChangedMsg(msg) => msg,
+      _ => panic!("Unable to convert to RouteHealthChangedMsg"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AssignFrontendReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AssignFrontendReq {
+    match item {
+      ProtocolMsg::AssignFrontendReq(msg) => msg,
+      _ => panic!("Unable to convert to AssignFrontendReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for AssignFrontendRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> AssignFrontendRep {
+    match item {
+      ProtocolMsg::AssignFrontendRep(msg) => msg,
+      _ => panic!("Unable to convert to AssignFrontendRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for LocateTopicReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> LocateTopicReq {
+    match item {
+      ProtocolMsg::LocateTopicReq(msg) => msg,
+      _ => panic!("Unable to convert to LocateTopicReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for LocateTopicRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> LocateTopicRep {
+    match item {
+      ProtocolMsg::LocateTopicRep(msg) => msg,
+      _ => panic!("Unable to convert to LocateTopicRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ResolveIpReq {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ResolveIpReq {
+    match item {
+      ProtocolMsg::ResolveIpReq(msg) => msg,
+      _ => panic!("Unable to convert to ResolveIpReq"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ResolveIpRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ResolveIpRep {
+    match item {
+      ProtocolMsg::ResolveIpRep(msg) => msg,
+      _ => panic!("Unable to convert to ResolveIpRep"),
+    }
+  }
+}
+
 pub trait Encode: ProstMessage + Sized {
   fn encode_type(bytes: &mut BytesMut);
 

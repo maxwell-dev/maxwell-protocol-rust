@@ -111,7 +111,7 @@ def build_protocol_msg_impl():
     )
 
 
-def build_send_error_struct_def():
+def build_handle_error_struct_def():
     return (
         f"""#[derive(Debug, ThisError)]\n"""
         f"""pub enum HandleError<M> {{\n"""
@@ -167,6 +167,26 @@ def build_into_enum_impls(enum_pairs):
             f"""{spaces(2)}#[inline]\n"""
             f"""{spaces(2)}fn into_enum(self) -> ProtocolMsg {{\n"""
             f"""{spaces(4)}ProtocolMsg::{capitalize(enum_name)}(self)\n"""
+            f"""{spaces(2)}}}\n"""
+            f"""}}"""
+        )
+    impls_output = "\n\n".join(impls)
+    return impls_output
+
+
+def build_from_enum_impls(enum_pairs):
+    impls = []
+    for enum_name, enum_value in enum_pairs:
+        if enum_name[0:7] == "UNKNOWN":
+            continue
+        impls.append(
+            f"""impl From<ProtocolMsg> for {capitalize(enum_name)} {{\n"""
+            f"""{spaces(2)}#[inline]\n"""
+            f"""{spaces(2)}fn from(item: ProtocolMsg) -> {capitalize(enum_name)} {{\n"""
+            f"""{spaces(4)}match item {{\n"""
+            f"""{spaces(6)}ProtocolMsg::{capitalize(enum_name)}(msg) => msg,\n"""
+            f"""{spaces(6)}_ => panic!("Unable to convert to {capitalize(enum_name)}"),\n"""
+            f"""{spaces(4)}}}\n"""
             f"""{spaces(2)}}}\n"""
             f"""}}"""
         )
@@ -330,10 +350,11 @@ def output(module_name, enum_pairs):
         f"""{build_protocol_msg_enum_def(enum_pairs)}\n\n"""
         f"""{build_protocol_msg_debug_impl(enum_pairs)}\n\n"""
         f"""{build_protocol_msg_impl()}\n\n"""
-        f"""{build_send_error_struct_def()}\n\n"""
+        f"""{build_handle_error_struct_def()}\n\n"""
         f"""{build_actix_message_impl(enum_pairs)}\n\n"""
         f"""{build_into_enum_trait_def()}\n\n"""
         f"""{build_into_enum_impls(enum_pairs)}\n\n"""
+        f"""{build_from_enum_impls(enum_pairs)}\n\n"""
         f"""{build_encode_trait_def()}\n\n"""
         f"""{build_encode_impls(enum_pairs)}\n\n"""
         f"""{build_encode_fn_def(enum_pairs)}\n\n"""
