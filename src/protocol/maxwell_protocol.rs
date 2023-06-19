@@ -326,6 +326,8 @@ pub struct Header {
     pub agent: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub endpoint: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub token: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
