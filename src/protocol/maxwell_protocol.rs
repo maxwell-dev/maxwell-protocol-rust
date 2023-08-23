@@ -208,8 +208,6 @@ pub struct SetRoutesRep {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoutesReq {
-    #[prost(uint32, tag = "1")]
-    pub version: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -218,8 +216,6 @@ pub struct GetRoutesReq {
 pub struct GetRoutesRep {
     #[prost(message, repeated, tag = "1")]
     pub route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
-    #[prost(uint32, tag = "2")]
-    pub version: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
