@@ -150,10 +150,6 @@ pub struct AuthRep {
 pub struct RegisterFrontendReq {
     #[prost(uint32, tag = "1")]
     pub http_port: u32,
-    #[prost(uint32, tag = "2")]
-    pub https_port: u32,
-    #[prost(string, tag = "3")]
-    pub public_ip: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
