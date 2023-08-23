@@ -11,6 +11,10 @@ pub enum ProtocolMsg {
   None,
   PingReq(PingReq),
   PingRep(PingRep),
+  OkRep(OkRep),
+  ErrorRep(ErrorRep),
+  Ok2Rep(Ok2Rep),
+  Error2Rep(Error2Rep),
   PushReq(PushReq),
   PushRep(PushRep),
   PullReq(PullReq),
@@ -19,25 +23,20 @@ pub enum ProtocolMsg {
   ReqRep(ReqRep),
   AuthReq(AuthReq),
   AuthRep(AuthRep),
-  OkRep(OkRep),
-  ErrorRep(ErrorRep),
-  Ok2Rep(Ok2Rep),
-  Error2Rep(Error2Rep),
   RegisterFrontendReq(RegisterFrontendReq),
   RegisterFrontendRep(RegisterFrontendRep),
   RegisterBackendReq(RegisterBackendReq),
   RegisterBackendRep(RegisterBackendRep),
-  RegisterServerReq(RegisterServerReq),
-  RegisterServerRep(RegisterServerRep),
-  AddRoutesReq(AddRoutesReq),
-  AddRoutesRep(AddRoutesRep),
+  RegisterServiceReq(RegisterServiceReq),
+  RegisterServiceRep(RegisterServiceRep),
+  SetRoutesReq(SetRoutesReq),
+  SetRoutesRep(SetRoutesRep),
   GetRoutesReq(GetRoutesReq),
   GetRoutesRep(GetRoutesRep),
-  RouteAddedMsg(RouteAddedMsg),
-  RouteDeletedMsg(RouteDeletedMsg),
-  RouteHealthChangedMsg(RouteHealthChangedMsg),
-  AssignFrontendReq(AssignFrontendReq),
-  AssignFrontendRep(AssignFrontendRep),
+  PickFrontendReq(PickFrontendReq),
+  PickFrontendRep(PickFrontendRep),
+  PickFrontendsReq(PickFrontendsReq),
+  PickFrontendsRep(PickFrontendsRep),
   LocateTopicReq(LocateTopicReq),
   LocateTopicRep(LocateTopicRep),
   ResolveIpReq(ResolveIpReq),
@@ -50,6 +49,10 @@ impl Debug for ProtocolMsg {
       ProtocolMsg::None => write!(f, "None"),
       ProtocolMsg::PingReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PingRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::OkRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::ErrorRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::Ok2Rep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::Error2Rep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PushReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PushRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PullReq(msg) => write!(f, "{:?}", msg),
@@ -58,25 +61,20 @@ impl Debug for ProtocolMsg {
       ProtocolMsg::ReqRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::AuthReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::AuthRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::OkRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::ErrorRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::Ok2Rep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::Error2Rep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RegisterFrontendReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RegisterFrontendRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RegisterBackendReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::RegisterBackendRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RegisterServerReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RegisterServerRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::AddRoutesReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::AddRoutesRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::RegisterServiceReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::RegisterServiceRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::SetRoutesReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::SetRoutesRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::GetRoutesReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::GetRoutesRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RouteAddedMsg(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RouteDeletedMsg(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::RouteHealthChangedMsg(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::AssignFrontendReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::AssignFrontendRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::PickFrontendReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::PickFrontendRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::PickFrontendsReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::PickFrontendsRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::LocateTopicReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::LocateTopicRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::ResolveIpReq(msg) => write!(f, "{:?}", msg),
@@ -147,20 +145,24 @@ impl ActixMessage for RegisterBackendReq {
   type Result = StdResult<RegisterBackendRep, HandleError<RegisterBackendReq>>;
 }
 
-impl ActixMessage for RegisterServerReq {
-  type Result = StdResult<RegisterServerRep, HandleError<RegisterServerReq>>;
+impl ActixMessage for RegisterServiceReq {
+  type Result = StdResult<RegisterServiceRep, HandleError<RegisterServiceReq>>;
 }
 
-impl ActixMessage for AddRoutesReq {
-  type Result = StdResult<AddRoutesRep, HandleError<AddRoutesReq>>;
+impl ActixMessage for SetRoutesReq {
+  type Result = StdResult<SetRoutesRep, HandleError<SetRoutesReq>>;
 }
 
 impl ActixMessage for GetRoutesReq {
   type Result = StdResult<GetRoutesRep, HandleError<GetRoutesReq>>;
 }
 
-impl ActixMessage for AssignFrontendReq {
-  type Result = StdResult<AssignFrontendRep, HandleError<AssignFrontendReq>>;
+impl ActixMessage for PickFrontendReq {
+  type Result = StdResult<PickFrontendRep, HandleError<PickFrontendReq>>;
+}
+
+impl ActixMessage for PickFrontendsReq {
+  type Result = StdResult<PickFrontendsRep, HandleError<PickFrontendsReq>>;
 }
 
 impl ActixMessage for LocateTopicReq {
@@ -186,6 +188,34 @@ impl IntoEnum for PingRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
     ProtocolMsg::PingRep(self)
+  }
+}
+
+impl IntoEnum for OkRep {
+  #[inline]
+  fn into_enum(self) -> ProtocolMsg {
+    ProtocolMsg::OkRep(self)
+  }
+}
+
+impl IntoEnum for ErrorRep {
+  #[inline]
+  fn into_enum(self) -> ProtocolMsg {
+    ProtocolMsg::ErrorRep(self)
+  }
+}
+
+impl IntoEnum for Ok2Rep {
+  #[inline]
+  fn into_enum(self) -> ProtocolMsg {
+    ProtocolMsg::Ok2Rep(self)
+  }
+}
+
+impl IntoEnum for Error2Rep {
+  #[inline]
+  fn into_enum(self) -> ProtocolMsg {
+    ProtocolMsg::Error2Rep(self)
   }
 }
 
@@ -245,34 +275,6 @@ impl IntoEnum for AuthRep {
   }
 }
 
-impl IntoEnum for OkRep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::OkRep(self)
-  }
-}
-
-impl IntoEnum for ErrorRep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::ErrorRep(self)
-  }
-}
-
-impl IntoEnum for Ok2Rep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::Ok2Rep(self)
-  }
-}
-
-impl IntoEnum for Error2Rep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::Error2Rep(self)
-  }
-}
-
 impl IntoEnum for RegisterFrontendReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
@@ -301,31 +303,31 @@ impl IntoEnum for RegisterBackendRep {
   }
 }
 
-impl IntoEnum for RegisterServerReq {
+impl IntoEnum for RegisterServiceReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RegisterServerReq(self)
+    ProtocolMsg::RegisterServiceReq(self)
   }
 }
 
-impl IntoEnum for RegisterServerRep {
+impl IntoEnum for RegisterServiceRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RegisterServerRep(self)
+    ProtocolMsg::RegisterServiceRep(self)
   }
 }
 
-impl IntoEnum for AddRoutesReq {
+impl IntoEnum for SetRoutesReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::AddRoutesReq(self)
+    ProtocolMsg::SetRoutesReq(self)
   }
 }
 
-impl IntoEnum for AddRoutesRep {
+impl IntoEnum for SetRoutesRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::AddRoutesRep(self)
+    ProtocolMsg::SetRoutesRep(self)
   }
 }
 
@@ -343,38 +345,31 @@ impl IntoEnum for GetRoutesRep {
   }
 }
 
-impl IntoEnum for RouteAddedMsg {
+impl IntoEnum for PickFrontendReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RouteAddedMsg(self)
+    ProtocolMsg::PickFrontendReq(self)
   }
 }
 
-impl IntoEnum for RouteDeletedMsg {
+impl IntoEnum for PickFrontendRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RouteDeletedMsg(self)
+    ProtocolMsg::PickFrontendRep(self)
   }
 }
 
-impl IntoEnum for RouteHealthChangedMsg {
+impl IntoEnum for PickFrontendsReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::RouteHealthChangedMsg(self)
+    ProtocolMsg::PickFrontendsReq(self)
   }
 }
 
-impl IntoEnum for AssignFrontendReq {
+impl IntoEnum for PickFrontendsRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::AssignFrontendReq(self)
-  }
-}
-
-impl IntoEnum for AssignFrontendRep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::AssignFrontendRep(self)
+    ProtocolMsg::PickFrontendsRep(self)
   }
 }
 
@@ -422,6 +417,46 @@ impl From<ProtocolMsg> for PingRep {
     match item {
       ProtocolMsg::PingRep(msg) => msg,
       _ => panic!("Unable to convert to PingRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for OkRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> OkRep {
+    match item {
+      ProtocolMsg::OkRep(msg) => msg,
+      _ => panic!("Unable to convert to OkRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for ErrorRep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> ErrorRep {
+    match item {
+      ProtocolMsg::ErrorRep(msg) => msg,
+      _ => panic!("Unable to convert to ErrorRep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for Ok2Rep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> Ok2Rep {
+    match item {
+      ProtocolMsg::Ok2Rep(msg) => msg,
+      _ => panic!("Unable to convert to Ok2Rep"),
+    }
+  }
+}
+
+impl From<ProtocolMsg> for Error2Rep {
+  #[inline]
+  fn from(item: ProtocolMsg) -> Error2Rep {
+    match item {
+      ProtocolMsg::Error2Rep(msg) => msg,
+      _ => panic!("Unable to convert to Error2Rep"),
     }
   }
 }
@@ -506,46 +541,6 @@ impl From<ProtocolMsg> for AuthRep {
   }
 }
 
-impl From<ProtocolMsg> for OkRep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> OkRep {
-    match item {
-      ProtocolMsg::OkRep(msg) => msg,
-      _ => panic!("Unable to convert to OkRep"),
-    }
-  }
-}
-
-impl From<ProtocolMsg> for ErrorRep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> ErrorRep {
-    match item {
-      ProtocolMsg::ErrorRep(msg) => msg,
-      _ => panic!("Unable to convert to ErrorRep"),
-    }
-  }
-}
-
-impl From<ProtocolMsg> for Ok2Rep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> Ok2Rep {
-    match item {
-      ProtocolMsg::Ok2Rep(msg) => msg,
-      _ => panic!("Unable to convert to Ok2Rep"),
-    }
-  }
-}
-
-impl From<ProtocolMsg> for Error2Rep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> Error2Rep {
-    match item {
-      ProtocolMsg::Error2Rep(msg) => msg,
-      _ => panic!("Unable to convert to Error2Rep"),
-    }
-  }
-}
-
 impl From<ProtocolMsg> for RegisterFrontendReq {
   #[inline]
   fn from(item: ProtocolMsg) -> RegisterFrontendReq {
@@ -586,42 +581,42 @@ impl From<ProtocolMsg> for RegisterBackendRep {
   }
 }
 
-impl From<ProtocolMsg> for RegisterServerReq {
+impl From<ProtocolMsg> for RegisterServiceReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> RegisterServerReq {
+  fn from(item: ProtocolMsg) -> RegisterServiceReq {
     match item {
-      ProtocolMsg::RegisterServerReq(msg) => msg,
-      _ => panic!("Unable to convert to RegisterServerReq"),
+      ProtocolMsg::RegisterServiceReq(msg) => msg,
+      _ => panic!("Unable to convert to RegisterServiceReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for RegisterServerRep {
+impl From<ProtocolMsg> for RegisterServiceRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> RegisterServerRep {
+  fn from(item: ProtocolMsg) -> RegisterServiceRep {
     match item {
-      ProtocolMsg::RegisterServerRep(msg) => msg,
-      _ => panic!("Unable to convert to RegisterServerRep"),
+      ProtocolMsg::RegisterServiceRep(msg) => msg,
+      _ => panic!("Unable to convert to RegisterServiceRep"),
     }
   }
 }
 
-impl From<ProtocolMsg> for AddRoutesReq {
+impl From<ProtocolMsg> for SetRoutesReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> AddRoutesReq {
+  fn from(item: ProtocolMsg) -> SetRoutesReq {
     match item {
-      ProtocolMsg::AddRoutesReq(msg) => msg,
-      _ => panic!("Unable to convert to AddRoutesReq"),
+      ProtocolMsg::SetRoutesReq(msg) => msg,
+      _ => panic!("Unable to convert to SetRoutesReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for AddRoutesRep {
+impl From<ProtocolMsg> for SetRoutesRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> AddRoutesRep {
+  fn from(item: ProtocolMsg) -> SetRoutesRep {
     match item {
-      ProtocolMsg::AddRoutesRep(msg) => msg,
-      _ => panic!("Unable to convert to AddRoutesRep"),
+      ProtocolMsg::SetRoutesRep(msg) => msg,
+      _ => panic!("Unable to convert to SetRoutesRep"),
     }
   }
 }
@@ -646,52 +641,42 @@ impl From<ProtocolMsg> for GetRoutesRep {
   }
 }
 
-impl From<ProtocolMsg> for RouteAddedMsg {
+impl From<ProtocolMsg> for PickFrontendReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> RouteAddedMsg {
+  fn from(item: ProtocolMsg) -> PickFrontendReq {
     match item {
-      ProtocolMsg::RouteAddedMsg(msg) => msg,
-      _ => panic!("Unable to convert to RouteAddedMsg"),
+      ProtocolMsg::PickFrontendReq(msg) => msg,
+      _ => panic!("Unable to convert to PickFrontendReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for RouteDeletedMsg {
+impl From<ProtocolMsg> for PickFrontendRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> RouteDeletedMsg {
+  fn from(item: ProtocolMsg) -> PickFrontendRep {
     match item {
-      ProtocolMsg::RouteDeletedMsg(msg) => msg,
-      _ => panic!("Unable to convert to RouteDeletedMsg"),
+      ProtocolMsg::PickFrontendRep(msg) => msg,
+      _ => panic!("Unable to convert to PickFrontendRep"),
     }
   }
 }
 
-impl From<ProtocolMsg> for RouteHealthChangedMsg {
+impl From<ProtocolMsg> for PickFrontendsReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> RouteHealthChangedMsg {
+  fn from(item: ProtocolMsg) -> PickFrontendsReq {
     match item {
-      ProtocolMsg::RouteHealthChangedMsg(msg) => msg,
-      _ => panic!("Unable to convert to RouteHealthChangedMsg"),
+      ProtocolMsg::PickFrontendsReq(msg) => msg,
+      _ => panic!("Unable to convert to PickFrontendsReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for AssignFrontendReq {
+impl From<ProtocolMsg> for PickFrontendsRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> AssignFrontendReq {
+  fn from(item: ProtocolMsg) -> PickFrontendsRep {
     match item {
-      ProtocolMsg::AssignFrontendReq(msg) => msg,
-      _ => panic!("Unable to convert to AssignFrontendReq"),
-    }
-  }
-}
-
-impl From<ProtocolMsg> for AssignFrontendRep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> AssignFrontendRep {
-    match item {
-      ProtocolMsg::AssignFrontendRep(msg) => msg,
-      _ => panic!("Unable to convert to AssignFrontendRep"),
+      ProtocolMsg::PickFrontendsRep(msg) => msg,
+      _ => panic!("Unable to convert to PickFrontendsRep"),
     }
   }
 }
@@ -769,62 +754,6 @@ impl Encode for PingRep {
   }
 }
 
-impl Encode for PushReq {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(3);
-  }
-}
-
-impl Encode for PushRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(4);
-  }
-}
-
-impl Encode for PullReq {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(5);
-  }
-}
-
-impl Encode for PullRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(6);
-  }
-}
-
-impl Encode for ReqReq {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(7);
-  }
-}
-
-impl Encode for ReqRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(8);
-  }
-}
-
-impl Encode for AuthReq {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(27);
-  }
-}
-
-impl Encode for AuthRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(28);
-  }
-}
-
 impl Encode for OkRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
@@ -850,6 +779,62 @@ impl Encode for Error2Rep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(32);
+  }
+}
+
+impl Encode for PushReq {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(33);
+  }
+}
+
+impl Encode for PushRep {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(34);
+  }
+}
+
+impl Encode for PullReq {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(35);
+  }
+}
+
+impl Encode for PullRep {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(36);
+  }
+}
+
+impl Encode for ReqReq {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(39);
+  }
+}
+
+impl Encode for ReqRep {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(40);
+  }
+}
+
+impl Encode for AuthReq {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(41);
+  }
+}
+
+impl Encode for AuthRep {
+  #[inline]
+  fn encode_type(bytes: &mut BytesMut) {
+    bytes.put_u8(42);
   }
 }
 
@@ -881,94 +866,87 @@ impl Encode for RegisterBackendRep {
   }
 }
 
-impl Encode for RegisterServerReq {
+impl Encode for RegisterServiceReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(69);
   }
 }
 
-impl Encode for RegisterServerRep {
+impl Encode for RegisterServiceRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(70);
   }
 }
 
-impl Encode for AddRoutesReq {
+impl Encode for SetRoutesReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(91);
+    bytes.put_u8(71);
   }
 }
 
-impl Encode for AddRoutesRep {
+impl Encode for SetRoutesRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(92);
+    bytes.put_u8(72);
   }
 }
 
 impl Encode for GetRoutesReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(95);
+    bytes.put_u8(75);
   }
 }
 
 impl Encode for GetRoutesRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(96);
+    bytes.put_u8(76);
   }
 }
 
-impl Encode for RouteAddedMsg {
+impl Encode for PickFrontendReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(100);
+    bytes.put_u8(81);
   }
 }
 
-impl Encode for RouteDeletedMsg {
+impl Encode for PickFrontendRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(101);
+    bytes.put_u8(82);
   }
 }
 
-impl Encode for RouteHealthChangedMsg {
+impl Encode for PickFrontendsReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(102);
+    bytes.put_u8(83);
   }
 }
 
-impl Encode for AssignFrontendReq {
+impl Encode for PickFrontendsRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(111);
-  }
-}
-
-impl Encode for AssignFrontendRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(112);
+    bytes.put_u8(84);
   }
 }
 
 impl Encode for LocateTopicReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(113);
+    bytes.put_u8(85);
   }
 }
 
 impl Encode for LocateTopicRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(114);
+    bytes.put_u8(86);
   }
 }
 
@@ -991,6 +969,10 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
     ProtocolMsg::None => panic!("Failed to encode ProtocolMsg::None"),
     ProtocolMsg::PingReq(msg) => msg.encode_msg(),
     ProtocolMsg::PingRep(msg) => msg.encode_msg(),
+    ProtocolMsg::OkRep(msg) => msg.encode_msg(),
+    ProtocolMsg::ErrorRep(msg) => msg.encode_msg(),
+    ProtocolMsg::Ok2Rep(msg) => msg.encode_msg(),
+    ProtocolMsg::Error2Rep(msg) => msg.encode_msg(),
     ProtocolMsg::PushReq(msg) => msg.encode_msg(),
     ProtocolMsg::PushRep(msg) => msg.encode_msg(),
     ProtocolMsg::PullReq(msg) => msg.encode_msg(),
@@ -999,25 +981,20 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
     ProtocolMsg::ReqRep(msg) => msg.encode_msg(),
     ProtocolMsg::AuthReq(msg) => msg.encode_msg(),
     ProtocolMsg::AuthRep(msg) => msg.encode_msg(),
-    ProtocolMsg::OkRep(msg) => msg.encode_msg(),
-    ProtocolMsg::ErrorRep(msg) => msg.encode_msg(),
-    ProtocolMsg::Ok2Rep(msg) => msg.encode_msg(),
-    ProtocolMsg::Error2Rep(msg) => msg.encode_msg(),
     ProtocolMsg::RegisterFrontendReq(msg) => msg.encode_msg(),
     ProtocolMsg::RegisterFrontendRep(msg) => msg.encode_msg(),
     ProtocolMsg::RegisterBackendReq(msg) => msg.encode_msg(),
     ProtocolMsg::RegisterBackendRep(msg) => msg.encode_msg(),
-    ProtocolMsg::RegisterServerReq(msg) => msg.encode_msg(),
-    ProtocolMsg::RegisterServerRep(msg) => msg.encode_msg(),
-    ProtocolMsg::AddRoutesReq(msg) => msg.encode_msg(),
-    ProtocolMsg::AddRoutesRep(msg) => msg.encode_msg(),
+    ProtocolMsg::RegisterServiceReq(msg) => msg.encode_msg(),
+    ProtocolMsg::RegisterServiceRep(msg) => msg.encode_msg(),
+    ProtocolMsg::SetRoutesReq(msg) => msg.encode_msg(),
+    ProtocolMsg::SetRoutesRep(msg) => msg.encode_msg(),
     ProtocolMsg::GetRoutesReq(msg) => msg.encode_msg(),
     ProtocolMsg::GetRoutesRep(msg) => msg.encode_msg(),
-    ProtocolMsg::RouteAddedMsg(msg) => msg.encode_msg(),
-    ProtocolMsg::RouteDeletedMsg(msg) => msg.encode_msg(),
-    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.encode_msg(),
-    ProtocolMsg::AssignFrontendReq(msg) => msg.encode_msg(),
-    ProtocolMsg::AssignFrontendRep(msg) => msg.encode_msg(),
+    ProtocolMsg::PickFrontendReq(msg) => msg.encode_msg(),
+    ProtocolMsg::PickFrontendRep(msg) => msg.encode_msg(),
+    ProtocolMsg::PickFrontendsReq(msg) => msg.encode_msg(),
+    ProtocolMsg::PickFrontendsRep(msg) => msg.encode_msg(),
     ProtocolMsg::LocateTopicReq(msg) => msg.encode_msg(),
     ProtocolMsg::LocateTopicRep(msg) => msg.encode_msg(),
     ProtocolMsg::ResolveIpReq(msg) => msg.encode_msg(),
@@ -1038,54 +1015,6 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
     let res: Result<PingRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::PingRep(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 3 {
-    let res: Result<PushReq, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::PushReq(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 4 {
-    let res: Result<PushRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::PushRep(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 5 {
-    let res: Result<PullReq, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::PullReq(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 6 {
-    let res: Result<PullRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::PullRep(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 7 {
-    let res: Result<ReqReq, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::ReqReq(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 8 {
-    let res: Result<ReqRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::ReqRep(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 27 {
-    let res: Result<AuthReq, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::AuthReq(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 28 {
-    let res: Result<AuthRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::AuthRep(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 29 {
@@ -1110,6 +1039,54 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
     let res: Result<Error2Rep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::Error2Rep(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 33 {
+    let res: Result<PushReq, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::PushReq(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 34 {
+    let res: Result<PushRep, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::PushRep(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 35 {
+    let res: Result<PullReq, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::PullReq(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 36 {
+    let res: Result<PullRep, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::PullRep(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 39 {
+    let res: Result<ReqReq, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::ReqReq(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 40 {
+    let res: Result<ReqRep, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::ReqRep(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 41 {
+    let res: Result<AuthReq, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::AuthReq(msg)),
+      Err(err) => Err(err),
+    }
+  } else if msg_type == 42 {
+    let res: Result<AuthRep, DecodeError> = ProstMessage::decode(msg_body);
+    match res {
+      Ok(msg) => Ok(ProtocolMsg::AuthRep(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 65 {
@@ -1137,78 +1114,72 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
       Err(err) => Err(err),
     }
   } else if msg_type == 69 {
-    let res: Result<RegisterServerReq, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<RegisterServiceReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RegisterServerReq(msg)),
+      Ok(msg) => Ok(ProtocolMsg::RegisterServiceReq(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 70 {
-    let res: Result<RegisterServerRep, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<RegisterServiceRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RegisterServerRep(msg)),
+      Ok(msg) => Ok(ProtocolMsg::RegisterServiceRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 91 {
-    let res: Result<AddRoutesReq, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 71 {
+    let res: Result<SetRoutesReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::AddRoutesReq(msg)),
+      Ok(msg) => Ok(ProtocolMsg::SetRoutesReq(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 92 {
-    let res: Result<AddRoutesRep, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 72 {
+    let res: Result<SetRoutesRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::AddRoutesRep(msg)),
+      Ok(msg) => Ok(ProtocolMsg::SetRoutesRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 95 {
+  } else if msg_type == 75 {
     let res: Result<GetRoutesReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::GetRoutesReq(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 96 {
+  } else if msg_type == 76 {
     let res: Result<GetRoutesRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::GetRoutesRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 100 {
-    let res: Result<RouteAddedMsg, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 81 {
+    let res: Result<PickFrontendReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RouteAddedMsg(msg)),
+      Ok(msg) => Ok(ProtocolMsg::PickFrontendReq(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 101 {
-    let res: Result<RouteDeletedMsg, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 82 {
+    let res: Result<PickFrontendRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RouteDeletedMsg(msg)),
+      Ok(msg) => Ok(ProtocolMsg::PickFrontendRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 102 {
-    let res: Result<RouteHealthChangedMsg, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 83 {
+    let res: Result<PickFrontendsReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::RouteHealthChangedMsg(msg)),
+      Ok(msg) => Ok(ProtocolMsg::PickFrontendsReq(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 111 {
-    let res: Result<AssignFrontendReq, DecodeError> = ProstMessage::decode(msg_body);
+  } else if msg_type == 84 {
+    let res: Result<PickFrontendsRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::AssignFrontendReq(msg)),
+      Ok(msg) => Ok(ProtocolMsg::PickFrontendsRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 112 {
-    let res: Result<AssignFrontendRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::AssignFrontendRep(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 113 {
+  } else if msg_type == 85 {
     let res: Result<LocateTopicReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::LocateTopicReq(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 114 {
+  } else if msg_type == 86 {
     let res: Result<LocateTopicRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
       Ok(msg) => Ok(ProtocolMsg::LocateTopicRep(msg)),
@@ -1236,6 +1207,10 @@ pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {
     ProtocolMsg::None => panic!("Failed to set ref for ProtocolMsg::None"),
     ProtocolMsg::PingReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PingRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::OkRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::ErrorRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::Ok2Rep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::Error2Rep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PushReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PushRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PullReq(msg) => msg.r#ref = r#ref,
@@ -1244,25 +1219,20 @@ pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {
     ProtocolMsg::ReqRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::AuthReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::AuthRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::OkRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::ErrorRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::Ok2Rep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::Error2Rep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RegisterFrontendReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RegisterFrontendRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RegisterBackendReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::RegisterBackendRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RegisterServerReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RegisterServerRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::AddRoutesReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::AddRoutesRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::RegisterServiceReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::RegisterServiceRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::SetRoutesReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::SetRoutesRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::GetRoutesReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RouteAddedMsg(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RouteDeletedMsg(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::AssignFrontendReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::AssignFrontendRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::PickFrontendReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::PickFrontendRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::PickFrontendsReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::PickFrontendsRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::LocateTopicRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::ResolveIpReq(msg) => msg.r#ref = r#ref,
@@ -1276,6 +1246,10 @@ pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {
     ProtocolMsg::None => panic!("Failed to get ref from ProtocolMsg::None"),
     ProtocolMsg::PingReq(msg) => msg.r#ref,
     ProtocolMsg::PingRep(msg) => msg.r#ref,
+    ProtocolMsg::OkRep(msg) => msg.r#ref,
+    ProtocolMsg::ErrorRep(msg) => msg.r#ref,
+    ProtocolMsg::Ok2Rep(msg) => msg.r#ref,
+    ProtocolMsg::Error2Rep(msg) => msg.r#ref,
     ProtocolMsg::PushReq(msg) => msg.r#ref,
     ProtocolMsg::PushRep(msg) => msg.r#ref,
     ProtocolMsg::PullReq(msg) => msg.r#ref,
@@ -1284,25 +1258,20 @@ pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {
     ProtocolMsg::ReqRep(msg) => msg.r#ref,
     ProtocolMsg::AuthReq(msg) => msg.r#ref,
     ProtocolMsg::AuthRep(msg) => msg.r#ref,
-    ProtocolMsg::OkRep(msg) => msg.r#ref,
-    ProtocolMsg::ErrorRep(msg) => msg.r#ref,
-    ProtocolMsg::Ok2Rep(msg) => msg.r#ref,
-    ProtocolMsg::Error2Rep(msg) => msg.r#ref,
     ProtocolMsg::RegisterFrontendReq(msg) => msg.r#ref,
     ProtocolMsg::RegisterFrontendRep(msg) => msg.r#ref,
     ProtocolMsg::RegisterBackendReq(msg) => msg.r#ref,
     ProtocolMsg::RegisterBackendRep(msg) => msg.r#ref,
-    ProtocolMsg::RegisterServerReq(msg) => msg.r#ref,
-    ProtocolMsg::RegisterServerRep(msg) => msg.r#ref,
-    ProtocolMsg::AddRoutesReq(msg) => msg.r#ref,
-    ProtocolMsg::AddRoutesRep(msg) => msg.r#ref,
+    ProtocolMsg::RegisterServiceReq(msg) => msg.r#ref,
+    ProtocolMsg::RegisterServiceRep(msg) => msg.r#ref,
+    ProtocolMsg::SetRoutesReq(msg) => msg.r#ref,
+    ProtocolMsg::SetRoutesRep(msg) => msg.r#ref,
     ProtocolMsg::GetRoutesReq(msg) => msg.r#ref,
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref,
-    ProtocolMsg::RouteAddedMsg(msg) => msg.r#ref,
-    ProtocolMsg::RouteDeletedMsg(msg) => msg.r#ref,
-    ProtocolMsg::RouteHealthChangedMsg(msg) => msg.r#ref,
-    ProtocolMsg::AssignFrontendReq(msg) => msg.r#ref,
-    ProtocolMsg::AssignFrontendRep(msg) => msg.r#ref,
+    ProtocolMsg::PickFrontendReq(msg) => msg.r#ref,
+    ProtocolMsg::PickFrontendRep(msg) => msg.r#ref,
+    ProtocolMsg::PickFrontendsReq(msg) => msg.r#ref,
+    ProtocolMsg::PickFrontendsRep(msg) => msg.r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref,
     ProtocolMsg::LocateTopicRep(msg) => msg.r#ref,
     ProtocolMsg::ResolveIpReq(msg) => msg.r#ref,
