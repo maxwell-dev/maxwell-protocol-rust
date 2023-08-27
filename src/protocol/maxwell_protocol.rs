@@ -423,3 +423,85 @@ impl MsgType {
         }
     }
 }
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ErrorCode {
+    /// common error codes: 0~99
+    Ok = 0,
+    UnknownMsg = 1,
+    /// master error codes: 100~199
+    NotAllowedToRegisterFrontend = 100,
+    NotAllowedToRegisterBackend = 101,
+    NotAllowedToRegisterService = 102,
+    FailedToPickFrontend = 103,
+    FailedToLocateTopic = 104,
+    MasterError = 199,
+    /// frontend error codes: 200~299
+    FailedToReqService = 200,
+    FailedToPullBackend = 201,
+    FrontendError = 299,
+    /// backend error codes: 300~399
+    FailedToPush = 300,
+    FailedToPull = 301,
+    UnknownTopic = 302,
+    BackendError = 399,
+    /// service error codes: 400~499
+    UnknownPath = 400,
+    ServiceError = 499,
+    /// client error codes: 500~599
+    ClientError = 599,
+}
+impl ErrorCode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ErrorCode::Ok => "OK",
+            ErrorCode::UnknownMsg => "UNKNOWN_MSG",
+            ErrorCode::NotAllowedToRegisterFrontend => "NOT_ALLOWED_TO_REGISTER_FRONTEND",
+            ErrorCode::NotAllowedToRegisterBackend => "NOT_ALLOWED_TO_REGISTER_BACKEND",
+            ErrorCode::NotAllowedToRegisterService => "NOT_ALLOWED_TO_REGISTER_SERVICE",
+            ErrorCode::FailedToPickFrontend => "FAILED_TO_PICK_FRONTEND",
+            ErrorCode::FailedToLocateTopic => "FAILED_TO_LOCATE_TOPIC",
+            ErrorCode::MasterError => "MASTER_ERROR",
+            ErrorCode::FailedToReqService => "FAILED_TO_REQ_SERVICE",
+            ErrorCode::FailedToPullBackend => "FAILED_TO_PULL_BACKEND",
+            ErrorCode::FrontendError => "FRONTEND_ERROR",
+            ErrorCode::FailedToPush => "FAILED_TO_PUSH",
+            ErrorCode::FailedToPull => "FAILED_TO_PULL",
+            ErrorCode::UnknownTopic => "UNKNOWN_TOPIC",
+            ErrorCode::BackendError => "BACKEND_ERROR",
+            ErrorCode::UnknownPath => "UNKNOWN_PATH",
+            ErrorCode::ServiceError => "SERVICE_ERROR",
+            ErrorCode::ClientError => "CLIENT_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OK" => Some(Self::Ok),
+            "UNKNOWN_MSG" => Some(Self::UnknownMsg),
+            "NOT_ALLOWED_TO_REGISTER_FRONTEND" => {
+                Some(Self::NotAllowedToRegisterFrontend)
+            }
+            "NOT_ALLOWED_TO_REGISTER_BACKEND" => Some(Self::NotAllowedToRegisterBackend),
+            "NOT_ALLOWED_TO_REGISTER_SERVICE" => Some(Self::NotAllowedToRegisterService),
+            "FAILED_TO_PICK_FRONTEND" => Some(Self::FailedToPickFrontend),
+            "FAILED_TO_LOCATE_TOPIC" => Some(Self::FailedToLocateTopic),
+            "MASTER_ERROR" => Some(Self::MasterError),
+            "FAILED_TO_REQ_SERVICE" => Some(Self::FailedToReqService),
+            "FAILED_TO_PULL_BACKEND" => Some(Self::FailedToPullBackend),
+            "FRONTEND_ERROR" => Some(Self::FrontendError),
+            "FAILED_TO_PUSH" => Some(Self::FailedToPush),
+            "FAILED_TO_PULL" => Some(Self::FailedToPull),
+            "UNKNOWN_TOPIC" => Some(Self::UnknownTopic),
+            "BACKEND_ERROR" => Some(Self::BackendError),
+            "UNKNOWN_PATH" => Some(Self::UnknownPath),
+            "SERVICE_ERROR" => Some(Self::ServiceError),
+            "CLIENT_ERROR" => Some(Self::ClientError),
+            _ => None,
+        }
+    }
+}
