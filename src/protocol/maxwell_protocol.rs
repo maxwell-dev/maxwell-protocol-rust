@@ -217,6 +217,38 @@ pub struct GetRoutesRep {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckIfTopicDistChangedReq {
+    #[prost(string, tag = "1")]
+    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckIfTopicDistChangedRep {
+    #[prost(string, tag = "1")]
+    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckIfRouteDistChangedReq {
+    #[prost(string, tag = "1")]
+    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckIfRouteDistChangedRep {
+    #[prost(string, tag = "1")]
+    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PickFrontendReq {
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
@@ -332,6 +364,10 @@ pub enum MsgType {
     SetRoutesRep = 72,
     GetRoutesReq = 75,
     GetRoutesRep = 76,
+    CheckIfTopicDistChangedReq = 77,
+    CheckIfTopicDistChangedRep = 78,
+    CheckIfRouteDistChangedReq = 79,
+    CheckIfRouteDistChangedRep = 80,
     PickFrontendReq = 81,
     PickFrontendRep = 82,
     PickFrontendsReq = 83,
@@ -373,6 +409,10 @@ impl MsgType {
             MsgType::SetRoutesRep => "SET_ROUTES_REP",
             MsgType::GetRoutesReq => "GET_ROUTES_REQ",
             MsgType::GetRoutesRep => "GET_ROUTES_REP",
+            MsgType::CheckIfTopicDistChangedReq => "CHECK_IF_TOPIC_DIST_CHANGED_REQ",
+            MsgType::CheckIfTopicDistChangedRep => "CHECK_IF_TOPIC_DIST_CHANGED_REP",
+            MsgType::CheckIfRouteDistChangedReq => "CHECK_IF_ROUTE_DIST_CHANGED_REQ",
+            MsgType::CheckIfRouteDistChangedRep => "CHECK_IF_ROUTE_DIST_CHANGED_REP",
             MsgType::PickFrontendReq => "PICK_FRONTEND_REQ",
             MsgType::PickFrontendRep => "PICK_FRONTEND_REP",
             MsgType::PickFrontendsReq => "PICK_FRONTENDS_REQ",
@@ -411,6 +451,10 @@ impl MsgType {
             "SET_ROUTES_REP" => Some(Self::SetRoutesRep),
             "GET_ROUTES_REQ" => Some(Self::GetRoutesReq),
             "GET_ROUTES_REP" => Some(Self::GetRoutesRep),
+            "CHECK_IF_TOPIC_DIST_CHANGED_REQ" => Some(Self::CheckIfTopicDistChangedReq),
+            "CHECK_IF_TOPIC_DIST_CHANGED_REP" => Some(Self::CheckIfTopicDistChangedRep),
+            "CHECK_IF_ROUTE_DIST_CHANGED_REQ" => Some(Self::CheckIfRouteDistChangedReq),
+            "CHECK_IF_ROUTE_DIST_CHANGED_REP" => Some(Self::CheckIfRouteDistChangedRep),
             "PICK_FRONTEND_REQ" => Some(Self::PickFrontendReq),
             "PICK_FRONTEND_REP" => Some(Self::PickFrontendRep),
             "PICK_FRONTENDS_REQ" => Some(Self::PickFrontendsReq),
