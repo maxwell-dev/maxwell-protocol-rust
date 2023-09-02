@@ -33,10 +33,10 @@ pub enum ProtocolMsg {
   SetRoutesRep(SetRoutesRep),
   GetRoutesReq(GetRoutesReq),
   GetRoutesRep(GetRoutesRep),
-  CheckIfTopicDistChangedReq(CheckIfTopicDistChangedReq),
-  CheckIfTopicDistChangedRep(CheckIfTopicDistChangedRep),
-  CheckIfRouteDistChangedReq(CheckIfRouteDistChangedReq),
-  CheckIfRouteDistChangedRep(CheckIfRouteDistChangedRep),
+  GetTopicDistChecksumReq(GetTopicDistChecksumReq),
+  GetTopicDistChecksumRep(GetTopicDistChecksumRep),
+  GetRouteDistChecksumReq(GetRouteDistChecksumReq),
+  GetRouteDistChecksumRep(GetRouteDistChecksumRep),
   PickFrontendReq(PickFrontendReq),
   PickFrontendRep(PickFrontendRep),
   PickFrontendsReq(PickFrontendsReq),
@@ -75,10 +75,10 @@ impl Debug for ProtocolMsg {
       ProtocolMsg::SetRoutesRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::GetRoutesReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::GetRoutesRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckIfTopicDistChangedReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckIfTopicDistChangedRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckIfRouteDistChangedReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckIfRouteDistChangedRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::GetTopicDistChecksumReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::GetTopicDistChecksumRep(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::GetRouteDistChecksumReq(msg) => write!(f, "{:?}", msg),
+      ProtocolMsg::GetRouteDistChecksumRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PickFrontendReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PickFrontendRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::PickFrontendsReq(msg) => write!(f, "{:?}", msg),
@@ -165,12 +165,12 @@ impl ActixMessage for GetRoutesReq {
   type Result = StdResult<GetRoutesRep, HandleError<GetRoutesReq>>;
 }
 
-impl ActixMessage for CheckIfTopicDistChangedReq {
-  type Result = StdResult<CheckIfTopicDistChangedRep, HandleError<CheckIfTopicDistChangedReq>>;
+impl ActixMessage for GetTopicDistChecksumReq {
+  type Result = StdResult<GetTopicDistChecksumRep, HandleError<GetTopicDistChecksumReq>>;
 }
 
-impl ActixMessage for CheckIfRouteDistChangedReq {
-  type Result = StdResult<CheckIfRouteDistChangedRep, HandleError<CheckIfRouteDistChangedReq>>;
+impl ActixMessage for GetRouteDistChecksumReq {
+  type Result = StdResult<GetRouteDistChecksumRep, HandleError<GetRouteDistChecksumReq>>;
 }
 
 impl ActixMessage for PickFrontendReq {
@@ -361,31 +361,31 @@ impl IntoEnum for GetRoutesRep {
   }
 }
 
-impl IntoEnum for CheckIfTopicDistChangedReq {
+impl IntoEnum for GetTopicDistChecksumReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckIfTopicDistChangedReq(self)
+    ProtocolMsg::GetTopicDistChecksumReq(self)
   }
 }
 
-impl IntoEnum for CheckIfTopicDistChangedRep {
+impl IntoEnum for GetTopicDistChecksumRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckIfTopicDistChangedRep(self)
+    ProtocolMsg::GetTopicDistChecksumRep(self)
   }
 }
 
-impl IntoEnum for CheckIfRouteDistChangedReq {
+impl IntoEnum for GetRouteDistChecksumReq {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckIfRouteDistChangedReq(self)
+    ProtocolMsg::GetRouteDistChecksumReq(self)
   }
 }
 
-impl IntoEnum for CheckIfRouteDistChangedRep {
+impl IntoEnum for GetRouteDistChecksumRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckIfRouteDistChangedRep(self)
+    ProtocolMsg::GetRouteDistChecksumRep(self)
   }
 }
 
@@ -685,42 +685,42 @@ impl From<ProtocolMsg> for GetRoutesRep {
   }
 }
 
-impl From<ProtocolMsg> for CheckIfTopicDistChangedReq {
+impl From<ProtocolMsg> for GetTopicDistChecksumReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> CheckIfTopicDistChangedReq {
+  fn from(item: ProtocolMsg) -> GetTopicDistChecksumReq {
     match item {
-      ProtocolMsg::CheckIfTopicDistChangedReq(msg) => msg,
-      _ => panic!("Unable to convert to CheckIfTopicDistChangedReq"),
+      ProtocolMsg::GetTopicDistChecksumReq(msg) => msg,
+      _ => panic!("Unable to convert to GetTopicDistChecksumReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for CheckIfTopicDistChangedRep {
+impl From<ProtocolMsg> for GetTopicDistChecksumRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> CheckIfTopicDistChangedRep {
+  fn from(item: ProtocolMsg) -> GetTopicDistChecksumRep {
     match item {
-      ProtocolMsg::CheckIfTopicDistChangedRep(msg) => msg,
-      _ => panic!("Unable to convert to CheckIfTopicDistChangedRep"),
+      ProtocolMsg::GetTopicDistChecksumRep(msg) => msg,
+      _ => panic!("Unable to convert to GetTopicDistChecksumRep"),
     }
   }
 }
 
-impl From<ProtocolMsg> for CheckIfRouteDistChangedReq {
+impl From<ProtocolMsg> for GetRouteDistChecksumReq {
   #[inline]
-  fn from(item: ProtocolMsg) -> CheckIfRouteDistChangedReq {
+  fn from(item: ProtocolMsg) -> GetRouteDistChecksumReq {
     match item {
-      ProtocolMsg::CheckIfRouteDistChangedReq(msg) => msg,
-      _ => panic!("Unable to convert to CheckIfRouteDistChangedReq"),
+      ProtocolMsg::GetRouteDistChecksumReq(msg) => msg,
+      _ => panic!("Unable to convert to GetRouteDistChecksumReq"),
     }
   }
 }
 
-impl From<ProtocolMsg> for CheckIfRouteDistChangedRep {
+impl From<ProtocolMsg> for GetRouteDistChecksumRep {
   #[inline]
-  fn from(item: ProtocolMsg) -> CheckIfRouteDistChangedRep {
+  fn from(item: ProtocolMsg) -> GetRouteDistChecksumRep {
     match item {
-      ProtocolMsg::CheckIfRouteDistChangedRep(msg) => msg,
-      _ => panic!("Unable to convert to CheckIfRouteDistChangedRep"),
+      ProtocolMsg::GetRouteDistChecksumRep(msg) => msg,
+      _ => panic!("Unable to convert to GetRouteDistChecksumRep"),
     }
   }
 }
@@ -992,28 +992,28 @@ impl Encode for GetRoutesRep {
   }
 }
 
-impl Encode for CheckIfTopicDistChangedReq {
+impl Encode for GetTopicDistChecksumReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(77);
   }
 }
 
-impl Encode for CheckIfTopicDistChangedRep {
+impl Encode for GetTopicDistChecksumRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(78);
   }
 }
 
-impl Encode for CheckIfRouteDistChangedReq {
+impl Encode for GetRouteDistChecksumReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(79);
   }
 }
 
-impl Encode for CheckIfRouteDistChangedRep {
+impl Encode for GetRouteDistChecksumRep {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
     bytes.put_u8(80);
@@ -1103,10 +1103,10 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
     ProtocolMsg::SetRoutesRep(msg) => msg.encode_msg(),
     ProtocolMsg::GetRoutesReq(msg) => msg.encode_msg(),
     ProtocolMsg::GetRoutesRep(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckIfTopicDistChangedReq(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckIfTopicDistChangedRep(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckIfRouteDistChangedReq(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckIfRouteDistChangedRep(msg) => msg.encode_msg(),
+    ProtocolMsg::GetTopicDistChecksumReq(msg) => msg.encode_msg(),
+    ProtocolMsg::GetTopicDistChecksumRep(msg) => msg.encode_msg(),
+    ProtocolMsg::GetRouteDistChecksumReq(msg) => msg.encode_msg(),
+    ProtocolMsg::GetRouteDistChecksumRep(msg) => msg.encode_msg(),
     ProtocolMsg::PickFrontendReq(msg) => msg.encode_msg(),
     ProtocolMsg::PickFrontendRep(msg) => msg.encode_msg(),
     ProtocolMsg::PickFrontendsReq(msg) => msg.encode_msg(),
@@ -1266,27 +1266,27 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
       Err(err) => Err(err),
     }
   } else if msg_type == 77 {
-    let res: Result<CheckIfTopicDistChangedReq, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<GetTopicDistChecksumReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckIfTopicDistChangedReq(msg)),
+      Ok(msg) => Ok(ProtocolMsg::GetTopicDistChecksumReq(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 78 {
-    let res: Result<CheckIfTopicDistChangedRep, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<GetTopicDistChecksumRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckIfTopicDistChangedRep(msg)),
+      Ok(msg) => Ok(ProtocolMsg::GetTopicDistChecksumRep(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 79 {
-    let res: Result<CheckIfRouteDistChangedReq, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<GetRouteDistChecksumReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckIfRouteDistChangedReq(msg)),
+      Ok(msg) => Ok(ProtocolMsg::GetRouteDistChecksumReq(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 80 {
-    let res: Result<CheckIfRouteDistChangedRep, DecodeError> = ProstMessage::decode(msg_body);
+    let res: Result<GetRouteDistChecksumRep, DecodeError> = ProstMessage::decode(msg_body);
     match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckIfRouteDistChangedRep(msg)),
+      Ok(msg) => Ok(ProtocolMsg::GetRouteDistChecksumRep(msg)),
       Err(err) => Err(err),
     }
   } else if msg_type == 81 {
@@ -1369,10 +1369,10 @@ pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {
     ProtocolMsg::SetRoutesRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::GetRoutesReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckIfTopicDistChangedReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckIfTopicDistChangedRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckIfRouteDistChangedReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckIfRouteDistChangedRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::GetTopicDistChecksumReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::GetTopicDistChecksumRep(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::GetRouteDistChecksumReq(msg) => msg.r#ref = r#ref,
+    ProtocolMsg::GetRouteDistChecksumRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PickFrontendReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PickFrontendRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::PickFrontendsReq(msg) => msg.r#ref = r#ref,
@@ -1412,10 +1412,10 @@ pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {
     ProtocolMsg::SetRoutesRep(msg) => msg.r#ref,
     ProtocolMsg::GetRoutesReq(msg) => msg.r#ref,
     ProtocolMsg::GetRoutesRep(msg) => msg.r#ref,
-    ProtocolMsg::CheckIfTopicDistChangedReq(msg) => msg.r#ref,
-    ProtocolMsg::CheckIfTopicDistChangedRep(msg) => msg.r#ref,
-    ProtocolMsg::CheckIfRouteDistChangedReq(msg) => msg.r#ref,
-    ProtocolMsg::CheckIfRouteDistChangedRep(msg) => msg.r#ref,
+    ProtocolMsg::GetTopicDistChecksumReq(msg) => msg.r#ref,
+    ProtocolMsg::GetTopicDistChecksumRep(msg) => msg.r#ref,
+    ProtocolMsg::GetRouteDistChecksumReq(msg) => msg.r#ref,
+    ProtocolMsg::GetRouteDistChecksumRep(msg) => msg.r#ref,
     ProtocolMsg::PickFrontendReq(msg) => msg.r#ref,
     ProtocolMsg::PickFrontendRep(msg) => msg.r#ref,
     ProtocolMsg::PickFrontendsReq(msg) => msg.r#ref,
