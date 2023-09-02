@@ -224,8 +224,8 @@ pub struct GetTopicDistChecksumReq {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTopicDistChecksumRep {
-    #[prost(string, tag = "1")]
-    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1")]
+    pub checksum: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -238,8 +238,8 @@ pub struct GetRouteDistChecksumReq {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouteDistChecksumRep {
-    #[prost(string, tag = "1")]
-    pub checksum: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1")]
+    pub checksum: u32,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
