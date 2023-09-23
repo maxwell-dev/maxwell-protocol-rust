@@ -5,4 +5,4 @@ authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-prost-build = "0.12.0"
+prost-build = "0.12.1"
