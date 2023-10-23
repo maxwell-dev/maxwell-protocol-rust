@@ -289,6 +289,24 @@ pub struct LocateTopicRep {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckTopicReq {
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckTopicRep {
+    #[prost(string, tag = "1")]
+    pub assigned_endpoint: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub checker_endpoint: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "15")]
+    pub r#ref: u32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveIpReq {
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
@@ -370,6 +388,8 @@ pub enum MsgType {
     PickFrontendsRep = 84,
     LocateTopicReq = 85,
     LocateTopicRep = 86,
+    CheckTopicReq = 87,
+    CheckTopicRep = 88,
     ResolveIpReq = 121,
     ResolveIpRep = 122,
 }
@@ -415,6 +435,8 @@ impl MsgType {
             MsgType::PickFrontendsRep => "PICK_FRONTENDS_REP",
             MsgType::LocateTopicReq => "LOCATE_TOPIC_REQ",
             MsgType::LocateTopicRep => "LOCATE_TOPIC_REP",
+            MsgType::CheckTopicReq => "CHECK_TOPIC_REQ",
+            MsgType::CheckTopicRep => "CHECK_TOPIC_REP",
             MsgType::ResolveIpReq => "RESOLVE_IP_REQ",
             MsgType::ResolveIpRep => "RESOLVE_IP_REP",
         }
@@ -457,6 +479,8 @@ impl MsgType {
             "PICK_FRONTENDS_REP" => Some(Self::PickFrontendsRep),
             "LOCATE_TOPIC_REQ" => Some(Self::LocateTopicReq),
             "LOCATE_TOPIC_REP" => Some(Self::LocateTopicRep),
+            "CHECK_TOPIC_REQ" => Some(Self::CheckTopicReq),
+            "CHECK_TOPIC_REP" => Some(Self::CheckTopicRep),
             "RESOLVE_IP_REQ" => Some(Self::ResolveIpReq),
             "RESOLVE_IP_REP" => Some(Self::ResolveIpRep),
             _ => None,
