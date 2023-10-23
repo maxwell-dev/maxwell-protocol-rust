@@ -499,6 +499,7 @@ pub enum ErrorCode {
     NotAllowedToRegisterService = 102,
     FailedToPickFrontend = 103,
     FailedToLocateTopic = 104,
+    FailedToCheckTopic = 105,
     MasterError = 199,
     /// frontend error codes: 200~299
     FailedToRequestService = 200,
@@ -529,6 +530,7 @@ impl ErrorCode {
             ErrorCode::NotAllowedToRegisterService => "NOT_ALLOWED_TO_REGISTER_SERVICE",
             ErrorCode::FailedToPickFrontend => "FAILED_TO_PICK_FRONTEND",
             ErrorCode::FailedToLocateTopic => "FAILED_TO_LOCATE_TOPIC",
+            ErrorCode::FailedToCheckTopic => "FAILED_TO_CHECK_TOPIC",
             ErrorCode::MasterError => "MASTER_ERROR",
             ErrorCode::FailedToRequestService => "FAILED_TO_REQUEST_SERVICE",
             ErrorCode::FailedToRequestBackend => "FAILED_TO_REQUEST_BACKEND",
@@ -554,6 +556,7 @@ impl ErrorCode {
             "NOT_ALLOWED_TO_REGISTER_SERVICE" => Some(Self::NotAllowedToRegisterService),
             "FAILED_TO_PICK_FRONTEND" => Some(Self::FailedToPickFrontend),
             "FAILED_TO_LOCATE_TOPIC" => Some(Self::FailedToLocateTopic),
+            "FAILED_TO_CHECK_TOPIC" => Some(Self::FailedToCheckTopic),
             "MASTER_ERROR" => Some(Self::MasterError),
             "FAILED_TO_REQUEST_SERVICE" => Some(Self::FailedToRequestService),
             "FAILED_TO_REQUEST_BACKEND" => Some(Self::FailedToRequestBackend),
