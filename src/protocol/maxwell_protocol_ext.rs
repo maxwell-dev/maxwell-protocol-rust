@@ -43,8 +43,6 @@ pub enum ProtocolMsg {
   PickFrontendsRep(PickFrontendsRep),
   LocateTopicReq(LocateTopicReq),
   LocateTopicRep(LocateTopicRep),
-  CheckTopicReq(CheckTopicReq),
-  CheckTopicRep(CheckTopicRep),
   ResolveIpReq(ResolveIpReq),
   ResolveIpRep(ResolveIpRep),
 }
@@ -87,8 +85,6 @@ impl Debug for ProtocolMsg {
       ProtocolMsg::PickFrontendsRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::LocateTopicReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::LocateTopicRep(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckTopicReq(msg) => write!(f, "{:?}", msg),
-      ProtocolMsg::CheckTopicRep(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::ResolveIpReq(msg) => write!(f, "{:?}", msg),
       ProtocolMsg::ResolveIpRep(msg) => write!(f, "{:?}", msg),
     }
@@ -187,10 +183,6 @@ impl ActixMessage for PickFrontendsReq {
 
 impl ActixMessage for LocateTopicReq {
   type Result = StdResult<LocateTopicRep, HandleError<LocateTopicReq>>;
-}
-
-impl ActixMessage for CheckTopicReq {
-  type Result = StdResult<CheckTopicRep, HandleError<CheckTopicReq>>;
 }
 
 impl ActixMessage for ResolveIpReq {
@@ -436,20 +428,6 @@ impl IntoEnum for LocateTopicRep {
   #[inline]
   fn into_enum(self) -> ProtocolMsg {
     ProtocolMsg::LocateTopicRep(self)
-  }
-}
-
-impl IntoEnum for CheckTopicReq {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckTopicReq(self)
-  }
-}
-
-impl IntoEnum for CheckTopicRep {
-  #[inline]
-  fn into_enum(self) -> ProtocolMsg {
-    ProtocolMsg::CheckTopicRep(self)
   }
 }
 
@@ -807,26 +785,6 @@ impl From<ProtocolMsg> for LocateTopicRep {
   }
 }
 
-impl From<ProtocolMsg> for CheckTopicReq {
-  #[inline]
-  fn from(item: ProtocolMsg) -> CheckTopicReq {
-    match item {
-      ProtocolMsg::CheckTopicReq(msg) => msg,
-      _ => panic!("Unable to convert to CheckTopicReq"),
-    }
-  }
-}
-
-impl From<ProtocolMsg> for CheckTopicRep {
-  #[inline]
-  fn from(item: ProtocolMsg) -> CheckTopicRep {
-    match item {
-      ProtocolMsg::CheckTopicRep(msg) => msg,
-      _ => panic!("Unable to convert to CheckTopicRep"),
-    }
-  }
-}
-
 impl From<ProtocolMsg> for ResolveIpReq {
   #[inline]
   fn from(item: ProtocolMsg) -> ResolveIpReq {
@@ -1104,20 +1062,6 @@ impl Encode for LocateTopicRep {
   }
 }
 
-impl Encode for CheckTopicReq {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(87);
-  }
-}
-
-impl Encode for CheckTopicRep {
-  #[inline]
-  fn encode_type(bytes: &mut BytesMut) {
-    bytes.put_u8(88);
-  }
-}
-
 impl Encode for ResolveIpReq {
   #[inline]
   fn encode_type(bytes: &mut BytesMut) {
@@ -1169,8 +1113,6 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
     ProtocolMsg::PickFrontendsRep(msg) => msg.encode_msg(),
     ProtocolMsg::LocateTopicReq(msg) => msg.encode_msg(),
     ProtocolMsg::LocateTopicRep(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckTopicReq(msg) => msg.encode_msg(),
-    ProtocolMsg::CheckTopicRep(msg) => msg.encode_msg(),
     ProtocolMsg::ResolveIpReq(msg) => msg.encode_msg(),
     ProtocolMsg::ResolveIpRep(msg) => msg.encode_msg(),
   }
@@ -1383,18 +1325,6 @@ pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
       Ok(msg) => Ok(ProtocolMsg::LocateTopicRep(msg)),
       Err(err) => Err(err),
     }
-  } else if msg_type == 87 {
-    let res: Result<CheckTopicReq, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckTopicReq(msg)),
-      Err(err) => Err(err),
-    }
-  } else if msg_type == 88 {
-    let res: Result<CheckTopicRep, DecodeError> = ProstMessage::decode(msg_body);
-    match res {
-      Ok(msg) => Ok(ProtocolMsg::CheckTopicRep(msg)),
-      Err(err) => Err(err),
-    }
   } else if msg_type == 121 {
     let res: Result<ResolveIpReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
@@ -1449,8 +1379,6 @@ pub fn set_ref(protocol_msg: &mut ProtocolMsg, r#ref: u32) -> &ProtocolMsg {
     ProtocolMsg::PickFrontendsRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::LocateTopicRep(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckTopicReq(msg) => msg.r#ref = r#ref,
-    ProtocolMsg::CheckTopicRep(msg) => msg.r#ref = r#ref,
     ProtocolMsg::ResolveIpReq(msg) => msg.r#ref = r#ref,
     ProtocolMsg::ResolveIpRep(msg) => msg.r#ref = r#ref,
   }
@@ -1494,8 +1422,6 @@ pub fn get_ref(protocol_msg: &ProtocolMsg) -> u32 {
     ProtocolMsg::PickFrontendsRep(msg) => msg.r#ref,
     ProtocolMsg::LocateTopicReq(msg) => msg.r#ref,
     ProtocolMsg::LocateTopicRep(msg) => msg.r#ref,
-    ProtocolMsg::CheckTopicReq(msg) => msg.r#ref,
-    ProtocolMsg::CheckTopicRep(msg) => msg.r#ref,
     ProtocolMsg::ResolveIpReq(msg) => msg.r#ref,
     ProtocolMsg::ResolveIpRep(msg) => msg.r#ref,
   }

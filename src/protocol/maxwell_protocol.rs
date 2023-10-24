@@ -289,24 +289,6 @@ pub struct LocateTopicRep {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CheckTopicReq {
-    #[prost(string, tag = "1")]
-    pub topic: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CheckTopicRep {
-    #[prost(string, tag = "1")]
-    pub assigned_endpoint: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub checker_endpoint: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
-    pub r#ref: u32,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveIpReq {
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
@@ -388,8 +370,6 @@ pub enum MsgType {
     PickFrontendsRep = 84,
     LocateTopicReq = 85,
     LocateTopicRep = 86,
-    CheckTopicReq = 87,
-    CheckTopicRep = 88,
     ResolveIpReq = 121,
     ResolveIpRep = 122,
 }
@@ -435,8 +415,6 @@ impl MsgType {
             MsgType::PickFrontendsRep => "PICK_FRONTENDS_REP",
             MsgType::LocateTopicReq => "LOCATE_TOPIC_REQ",
             MsgType::LocateTopicRep => "LOCATE_TOPIC_REP",
-            MsgType::CheckTopicReq => "CHECK_TOPIC_REQ",
-            MsgType::CheckTopicRep => "CHECK_TOPIC_REP",
             MsgType::ResolveIpReq => "RESOLVE_IP_REQ",
             MsgType::ResolveIpRep => "RESOLVE_IP_REP",
         }
@@ -479,8 +457,6 @@ impl MsgType {
             "PICK_FRONTENDS_REP" => Some(Self::PickFrontendsRep),
             "LOCATE_TOPIC_REQ" => Some(Self::LocateTopicReq),
             "LOCATE_TOPIC_REP" => Some(Self::LocateTopicRep),
-            "CHECK_TOPIC_REQ" => Some(Self::CheckTopicReq),
-            "CHECK_TOPIC_REP" => Some(Self::CheckTopicRep),
             "RESOLVE_IP_REQ" => Some(Self::ResolveIpReq),
             "RESOLVE_IP_REP" => Some(Self::ResolveIpRep),
             _ => None,
@@ -497,9 +473,9 @@ pub enum ErrorCode {
     NotAllowedToRegisterFrontend = 100,
     NotAllowedToRegisterBackend = 101,
     NotAllowedToRegisterService = 102,
-    FailedToPickFrontend = 103,
-    FailedToLocateTopic = 104,
-    FailedToCheckTopic = 105,
+    FailedToSetRoutes = 103,
+    FailedToPickFrontend = 104,
+    FailedToLocateTopic = 105,
     MasterError = 199,
     /// frontend error codes: 200~299
     FailedToRequestService = 200,
@@ -528,9 +504,9 @@ impl ErrorCode {
             ErrorCode::NotAllowedToRegisterFrontend => "NOT_ALLOWED_TO_REGISTER_FRONTEND",
             ErrorCode::NotAllowedToRegisterBackend => "NOT_ALLOWED_TO_REGISTER_BACKEND",
             ErrorCode::NotAllowedToRegisterService => "NOT_ALLOWED_TO_REGISTER_SERVICE",
+            ErrorCode::FailedToSetRoutes => "FAILED_TO_SET_ROUTES",
             ErrorCode::FailedToPickFrontend => "FAILED_TO_PICK_FRONTEND",
             ErrorCode::FailedToLocateTopic => "FAILED_TO_LOCATE_TOPIC",
-            ErrorCode::FailedToCheckTopic => "FAILED_TO_CHECK_TOPIC",
             ErrorCode::MasterError => "MASTER_ERROR",
             ErrorCode::FailedToRequestService => "FAILED_TO_REQUEST_SERVICE",
             ErrorCode::FailedToRequestBackend => "FAILED_TO_REQUEST_BACKEND",
@@ -554,9 +530,9 @@ impl ErrorCode {
             }
             "NOT_ALLOWED_TO_REGISTER_BACKEND" => Some(Self::NotAllowedToRegisterBackend),
             "NOT_ALLOWED_TO_REGISTER_SERVICE" => Some(Self::NotAllowedToRegisterService),
+            "FAILED_TO_SET_ROUTES" => Some(Self::FailedToSetRoutes),
             "FAILED_TO_PICK_FRONTEND" => Some(Self::FailedToPickFrontend),
             "FAILED_TO_LOCATE_TOPIC" => Some(Self::FailedToLocateTopic),
-            "FAILED_TO_CHECK_TOPIC" => Some(Self::FailedToCheckTopic),
             "MASTER_ERROR" => Some(Self::MasterError),
             "FAILED_TO_REQUEST_SERVICE" => Some(Self::FailedToRequestService),
             "FAILED_TO_REQUEST_BACKEND" => Some(Self::FailedToRequestBackend),
