@@ -23,6 +23,8 @@ pub struct ErrorRep {
     pub code: i32,
     #[prost(string, tag = "2")]
     pub desc: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "3")]
+    pub extra: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -43,6 +45,8 @@ pub struct Error2Rep {
     pub code: i32,
     #[prost(string, tag = "2")]
     pub desc: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "3")]
+    pub extra: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(uint32, tag = "13")]
     pub conn0_ref: u32,
     #[prost(uint32, tag = "14")]
