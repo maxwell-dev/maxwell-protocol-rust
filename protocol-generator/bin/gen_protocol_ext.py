@@ -253,11 +253,17 @@ def build_encode_fn_def(enum_pairs):
 
     return encode_fn_def_output
 
+def build_decode_fn_def():
+    return (
+        f"""pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {{\n"""
+        f"""{spaces(2)}decode_bytes(bytes.as_ref())\n"""
+        f"""}}"""
+    )
 
-def build_decode_fn_def(enum_pairs):
+def build_decode_bytes_fn_def(enum_pairs):
     vars_decl_output = (
         f"""{spaces(2)}let msg_type = bytes[0] as i8;\n"""
-        f"""{spaces(2)}let msg_body = bytes.slice(1..);"""
+        f"""{spaces(2)}let msg_body = &bytes[1..];"""
     )
 
     case_decls = []
@@ -288,7 +294,7 @@ def build_decode_fn_def(enum_pairs):
     cases_output = "".join(case_decls)
 
     decode_fn_def_output = (
-        f"""pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {{\n"""
+        f"""pub fn decode_bytes(bytes: &[u8]) -> Result<ProtocolMsg, DecodeError> {{\n"""
         f"""{vars_decl_output}\n"""
         f"""{cases_output}\n"""
         f"""}}"""
@@ -358,7 +364,8 @@ def output(module_name, enum_pairs):
         f"""{build_encode_trait_def()}\n\n"""
         f"""{build_encode_impls(enum_pairs)}\n\n"""
         f"""{build_encode_fn_def(enum_pairs)}\n\n"""
-        f"""{build_decode_fn_def(enum_pairs)}\n\n"""
+        f"""{build_decode_fn_def()}\n\n"""
+        f"""{build_decode_bytes_fn_def(enum_pairs)}\n\n"""
         f"""{build_set_ref_fn_def(enum_pairs)}\n\n"""
         f"""{build_get_ref_fn_def(enum_pairs)}"""
     )

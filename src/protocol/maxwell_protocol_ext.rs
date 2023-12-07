@@ -1119,8 +1119,12 @@ pub fn encode(protocol_msg: &ProtocolMsg) -> Bytes {
 }
 
 pub fn decode(bytes: &Bytes) -> Result<ProtocolMsg, DecodeError> {
+  decode_bytes(bytes.as_ref())
+}
+
+pub fn decode_bytes(bytes: &[u8]) -> Result<ProtocolMsg, DecodeError> {
   let msg_type = bytes[0] as i8;
-  let msg_body = bytes.slice(1..);
+  let msg_body = &bytes[1..];
   if msg_type == 1 {
     let res: Result<PingReq, DecodeError> = ProstMessage::decode(msg_body);
     match res {
