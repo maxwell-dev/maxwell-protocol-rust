@@ -5,7 +5,7 @@ name = "maxwell-protocol"
 version = "0.22.0"
 
 [dependencies]
-actix = "0.13.1"
+actix = "0.13.3"
 bytes = "1.5.0"
 prost = "0.12.3"
-thiserror = "1.0.50"
+thiserror = "1.0.58"
