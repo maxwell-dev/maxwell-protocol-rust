@@ -16,7 +16,7 @@ def parse():
 
 
 def extract(content, enum_type_name):
-    enum_type_def_pattern = r"enum\s+" + enum_type_name + "\s+{([^}]+)}"
+    enum_type_def_pattern = r"enum\s+" + enum_type_name + r"\s+{([^}]+)}"
     enum_type_def_match = re.search(enum_type_def_pattern, content)
 
     if enum_type_def_match:

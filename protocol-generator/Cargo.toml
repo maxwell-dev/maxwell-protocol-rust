@@ -1,8 +1,8 @@
 [package]
-name = "protocol-generator"
-version = "0.5.1"
 authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
 edition = "2021"
+name = "protocol-generator"
+version = "0.5.1"
 
 [dependencies]
-prost-build = "0.12.1"
+prost-build = "0.12.3"
