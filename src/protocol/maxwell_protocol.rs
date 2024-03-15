@@ -191,7 +191,23 @@ pub struct RegisterServiceRep {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetRoutesReq {
     #[prost(string, repeated, tag = "1")]
-    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    pub ws_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "2")]
+    pub get_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "3")]
+    pub post_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "4")]
+    pub put_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "5")]
+    pub patch_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "6")]
+    pub delete_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "7")]
+    pub head_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "8")]
+    pub options_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "9")]
+    pub trace_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
@@ -211,7 +227,23 @@ pub struct GetRoutesReq {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoutesRep {
     #[prost(message, repeated, tag = "1")]
-    pub route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    pub ws_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "2")]
+    pub get_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "3")]
+    pub post_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "4")]
+    pub put_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "5")]
+    pub patch_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "6")]
+    pub delete_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "7")]
+    pub head_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "8")]
+    pub options_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
+    #[prost(message, repeated, tag = "9")]
+    pub trace_route_groups: ::prost::alloc::vec::Vec<RouteGroup>,
     #[prost(uint32, tag = "15")]
     pub r#ref: u32,
 }
