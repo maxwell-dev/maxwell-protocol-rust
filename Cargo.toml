@@ -2,10 +2,10 @@
 authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
 edition = "2021"
 name = "maxwell-protocol"
-version = "0.23.0"
+version = "0.23.1"
 
 [dependencies]
 actix = "0.13.3"
-bytes = "1.5.0"
-prost = "0.12.3"
+bytes = "1.6.0"
+prost = "0.12.4"
 thiserror = "1.0.58"
