@@ -2,7 +2,7 @@
 authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
 edition = "2021"
 name = "protocol-generator"
-version = "0.5.1"
+version = "0.5.2"
 
 [dependencies]
-prost-build = "0.12.4"
+prost-build = "0.13.2"
