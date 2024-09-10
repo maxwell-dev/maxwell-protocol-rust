@@ -1,8 +1,17 @@
 [package]
-authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
-edition = "2021"
 name = "maxwell-protocol"
-version = "0.24.1"
+version = "0.24.2"
+description = "Maxwell protocol implementation for Rust."
+authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/maxwell-dev/maxwell"
+categories = ["foundation-framework", "middleware"]
+keywords = ["maxwell", "data-exchange", "message-communication"]
+exclude = ["/protocol-generator", ".vscode", "target", "Cargo.lock"]
+edition = "2021"
+rust-version = "1.75"
+
 
 [dependencies]
 actix = "0.13.5"
