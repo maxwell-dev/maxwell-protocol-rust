@@ -1,19 +1,19 @@
 [package]
-name = "maxwell-protocol"
-version = "0.24.3"
-description = "Maxwell protocol implementation for Rust."
 authors = ["Chaoqian Xu <chaoranxu@gmail.com>"]
+description = "Maxwell protocol implementation for Rust."
+edition = "2021"
+exclude = ["/protocol-generator", ".vscode", "target", "Cargo.lock"]
+keywords = ["maxwell", "data-exchange", "msg-communication"]
 license = "Apache-2.0"
+name = "maxwell-protocol"
 readme = "README.md"
 repository = "https://github.com/maxwell-dev/maxwell"
-keywords = ["maxwell", "data-exchange", "msg-communication"]
-exclude = ["/protocol-generator", ".vscode", "target", "Cargo.lock"]
-edition = "2021"
 rust-version = "1.75"
-
+version = "0.25.0"
 
 [dependencies]
 actix = "0.13.5"
 bytes = "1.7.1"
 prost = "0.13.2"
+serde = {version = "1.0.210", features = ["derive"]}
 thiserror = "1.0.63"

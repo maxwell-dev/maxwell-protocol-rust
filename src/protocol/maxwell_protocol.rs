@@ -322,6 +322,8 @@ pub struct Header {
     #[prost(string, tag = "3")]
     pub token: ::prost::alloc::string::String,
 }
+#[derive(::serde::Serialize)]
+#[serde(rename_all = "camelCase")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteGroup {
     #[prost(string, tag = "1")]
